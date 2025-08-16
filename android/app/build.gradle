@@ -79,6 +79,9 @@ android {
 
     namespace "com.foodbuddie"
     defaultConfig {
+        manifestPlaceholders = [
+            googleAuthWebClientId: "AIzaSyApxNnyaH-SPIW5gW3f-aSi3-k1Cr0dPeI"
+        ]
         applicationId "com.foodbuddie"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -110,7 +113,8 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-
+    implementation project(':react-native-fs')
+    
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {

@@ -1,0 +1,16 @@
+export const preferences_icons = {
+    "Vegan": "https://i.imgur.com/VaYM47R.png",
+    "Non-vegetarian": "https://i.imgur.com/u9LYqtb.png",
+    "Jain": "https://i.imgur.com/rAvKEBV.png",
+    "Other": "https://i.imgur.com/jZuVt9Z.png",
+    "Vegetarian": "https://i.imgur.com/pqUZFDQ.png",
+    "Eggetarian": "https://i.imgur.com/l0AWSkl.png",
+    "Pescatarian": "https://i.imgur.com/UOpxMaV.png",
+    "Peanut": "https://i.imgur.com/UcF8xBC.png",
+    "Gluten":"https://i.imgur.com/p5Cq7HT.png",
+    "Seafood": "https://i.imgur.com/UOpxMaV.png",
+    "Dairy": "https://i.imgur.com/E1SxBpK.png",
+    "Soy/Soybean": "https://i.imgur.com/il1KEoK.png",
+    "Pulses/Legume": "https://i.imgur.com/vM13hKK.png",
+    "None": "https://i.imgur.com/H5a0cup.png",
+};
