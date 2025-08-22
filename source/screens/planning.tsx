@@ -86,7 +86,7 @@ const useDayListContainer = (props) => {
                 restDisplacementThreshold: 0.001, // When to stop the animation
                 restSpeedThreshold: 0.001, // Speed threshold to stop the animation
             });
-        }, 200)
+        }, 300)
     }, [day])
 
 
