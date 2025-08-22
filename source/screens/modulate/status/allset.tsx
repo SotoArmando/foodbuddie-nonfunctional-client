@@ -1,12 +1,11 @@
 import { Image, Pressable, View } from "react-native";
-import { useComponentStyles } from "../providers/StyleProvider"
+import { useComponentStyles } from "../../../providers/StyleProvider"
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import PrerenderedText from "../abstract/PrerenderedTextView";
-import { useSession } from "../providers/SessionProvider";
-import { useScreenRoutes } from "../providers/NavigationProvider";
-import { scale } from "../abstract/StyleProvider";
-import { RectButton } from "react-native-gesture-handler";
-import { CommonRectButton } from "../components/CommonRectButton";
+import PrerenderedText from "../../../abstract/PrerenderedTextView";
+import { useSession } from "../../../providers/SessionProvider";
+import { useScreenRoutes } from "../../../providers/NavigationProvider";
+import { scale } from "../../../abstract/StyleProvider";
+import { CommonRectButton } from "../../../components/CommonRectButton";
 
 const pressableRippleConfig = { color: '#FF7C36', borderless: false, radius: 200 };
 
@@ -88,7 +87,6 @@ export const AllSet = () => {
                     }} />
 
                     <CommonRectButton android_ripple={pressableRippleConfig} style={AllSetButtonCommonContainer} onPress={handleButtonClick}>
-
                         <PrerenderedText
                             style={AllSetButtonCallLabel}
                             width={101}

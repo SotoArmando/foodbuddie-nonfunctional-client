@@ -1,7 +1,7 @@
 import { Image, ImageBackground, StatusBar, StyleSheet, View } from "react-native";
 import { scaleStyles } from "../abstract/StyleProvider";
 import { AppLayout } from "./app_layout";
-import MorphingShape from "../screens/morphtest";
+import MorphingShape from "../screens/modulate/bottomnavbar/morphtest";
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 export const screensLayoutStyles = StyleSheet.create(

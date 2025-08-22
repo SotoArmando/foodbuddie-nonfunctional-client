@@ -1,13 +1,13 @@
 import { Image, ImageBackground, View } from "react-native"
-import { useComponentStyles } from "../providers/StyleProvider"
-import PrerenderedText from "../abstract/PrerenderedTextView";
+import { useComponentStyles } from "../../../providers/StyleProvider"
+import PrerenderedText from "../../../abstract/PrerenderedTextView";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
-import { scale } from "../abstract/StyleProvider";
+import { scale } from "../../../abstract/StyleProvider";
 import { useIsFocused } from "@react-navigation/native";
-import { CommonRectButton } from "../components/CommonRectButton";
+import { CommonRectButton } from "../../../components/CommonRectButton";
 import chunk from 'chunk-text';
-import { transform } from "../helpers/styleStringHelper";
+import { transform } from "../../../helpers/styleStringHelper";
 
 export const RecipesDetails = () => {
     const isFocused = useIsFocused();

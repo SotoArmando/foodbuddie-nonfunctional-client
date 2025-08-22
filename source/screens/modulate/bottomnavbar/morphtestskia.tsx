@@ -10,17 +10,17 @@ import {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
-import { states } from "../abstract/BottomnavMorph";
+import { states } from "../../../abstract/BottomnavMorph";
 import { BaseButton, RectButton } from "react-native-gesture-handler";
 import { Button, Text, Alert } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 const { width, height } = Dimensions.get("window");
 import { debounce } from "lodash";
-import { useSession } from "../providers/SessionProvider";
-import PrerenderedText from "../abstract/PrerenderedTextView";
-import { useScreenRoutes } from "../providers/NavigationProvider";
-import { scale } from "../abstract/StyleProvider";
-import { CommonRectButton } from "../components/CommonRectButton";
+import { useSession } from "../../../providers/SessionProvider";
+import PrerenderedText from "../../../abstract/PrerenderedTextView";
+import { useScreenRoutes } from "../../../providers/NavigationProvider";
+import { scale } from "../../../abstract/StyleProvider";
+import { CommonRectButton } from "../../../components/CommonRectButton";
 
 
 
@@ -67,11 +67,11 @@ export const SkiaTutorial = () => {
   const circleOpacity = useDerivedValue(() => progressO.value);
   const circleYPosition = useDerivedValue(() => progressO.value * 20);
   const imageShadow = useImage("https://i.imgur.com/zHwObzo.png");
-  const label0 = useImage("https://ampland-fortune-bouquet-structural.trycloudflare.com/static/3169106085.webp");
-  const label1 = useImage("https://ampland-fortune-bouquet-structural.trycloudflare.com/static/3834523372.webp");
-  const label2 = useImage("https://ampland-fortune-bouquet-structural.trycloudflare.com/static/3838130273.webp");
-  const label3 = useImage("https://ampland-fortune-bouquet-structural.trycloudflare.com/static/3936234647.webp");
-  const label4 = useImage("https://ampland-fortune-bouquet-structural.trycloudflare.com/static/4067652146.webp");
+  const label0 = useImage("https://antonio-constant-intranet-field.trycloudflare.com/static/3169106085.webp");
+  const label1 = useImage("https://antonio-constant-intranet-field.trycloudflare.com/static/3834523372.webp");
+  const label2 = useImage("https://antonio-constant-intranet-field.trycloudflare.com/static/3838130273.webp");
+  const label3 = useImage("https://antonio-constant-intranet-field.trycloudflare.com/static/3936234647.webp");
+  const label4 = useImage("https://antonio-constant-intranet-field.trycloudflare.com/static/4067652146.webp");
   const icon0 = useImage("https://i.imgur.com/5U0lJAC.png");
   const icon1 = useImage("https://i.imgur.com/Wy79JUg.png");
   const icon2 = useImage("https://i.imgur.com/G64woUg.png");

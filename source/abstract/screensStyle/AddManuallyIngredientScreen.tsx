@@ -1,5 +1,5 @@
 import { StyleSheet, TextStyle, ViewStyle, ImageStyle, PixelRatio } from 'react-native';
-import { SearchScreen } from '../../screens/searchscreen';
+import { SearchScreen } from '../../screens/searchsmodal';
 import { PrerenderedTextStyle } from './ScannerScreen';
 
 export type AddManuallyIngredientScreen = {

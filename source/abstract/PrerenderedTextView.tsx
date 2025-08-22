@@ -28,7 +28,7 @@ interface TextImage {
   isIcon?: string;
   viewY?: number;
   viewX?: number;
-  style?: PrerenderedTextStyle;
+  style?: PrerenderedTextStyle | TextStyle;
   letterSpacing?: number;
   quality?: number;
   viewStyle?: ViewStyle;

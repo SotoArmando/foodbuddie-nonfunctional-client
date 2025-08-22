@@ -1,11 +1,11 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useComponentStyles } from "../providers/StyleProvider"
+import { useComponentStyles } from "../../../providers/StyleProvider"
 import { Image, View } from "react-native";
-import PrerenderedText from "../abstract/PrerenderedTextView";
-import { useScreenRoutes } from "../providers/NavigationProvider";
+import PrerenderedText from "../../../abstract/PrerenderedTextView";
+import { useScreenRoutes } from "../../../providers/NavigationProvider";
 import { RectButton } from "react-native-gesture-handler";
-import { scale } from "../abstract/StyleProvider";
-import { CommonRectButton } from "../components/CommonRectButton";
+import { scale } from "../../../abstract/StyleProvider";
+import { CommonRectButton } from "../../../components/CommonRectButton";
 export const EntryFieldInput = (props) => {
     const { fieldname, placeholder, chevronIcon, calendarIcon, type, text, isFocused = true } = props;
     const {
@@ -67,7 +67,7 @@ const QuantityEntry = (params) => ({
     text: params?.count,
 })
 
-export const AddManuallyIngredientScreen = ({ params, isFocused = true }) => {
+export const ManuallyTab = ({ params, isFocused = true }) => {
     const {
         AddManuallyIngredientScreenComponent,
         AddManuallyIngredientScreenComponentRowSeparator

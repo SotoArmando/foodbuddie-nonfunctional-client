@@ -1,14 +1,14 @@
 import { Image, Pressable, View } from "react-native"
-import { useComponentStyles } from "../providers/StyleProvider"
-import PrerenderedText from "../abstract/PrerenderedTextView";
-import { transform } from "../helpers/styleStringHelper";
-import { scale } from "../abstract/StyleProvider";
+import { useComponentStyles } from "../../../providers/StyleProvider"
+import PrerenderedText from "../../../abstract/PrerenderedTextView";
+import { transform } from "../../../helpers/styleStringHelper";
+import { scale } from "../../../abstract/StyleProvider";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
-import { useSession } from "../providers/SessionProvider";
-import { useScreenRoutes } from "../providers/NavigationProvider";
+import { useSession } from "../../../providers/SessionProvider";
+import { useScreenRoutes } from "../../../providers/NavigationProvider";
 import { useIsFocused } from "@react-navigation/native";
-import { CommonRectButton } from "../components/CommonRectButton";
+import { CommonRectButton } from "../../../components/CommonRectButton";
 
 export const PlannerAdd = () => {
 

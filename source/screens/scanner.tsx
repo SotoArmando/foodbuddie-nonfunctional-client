@@ -8,7 +8,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { RectButton } from "react-native-gesture-handler";
 import RNFS from "react-native-fs";
 import { useScreenRoutes } from "../providers/NavigationProvider";
-import { AddManuallyIngredientScreen } from "./AddManuallyIngredientScreen";
+import { ManuallyTab } from "./abstract/scanner/manuallytab";
 import { useIsFocused } from "@react-navigation/native";
 import { CommonRectButton } from "../components/CommonRectButton";
 
@@ -176,7 +176,7 @@ export const Scanner = ({ route }) => {
                 </View>
 
                 {manually ?
-                    <AddManuallyIngredientScreen params={route?.params} isFocused={isFocused} />
+                    <ManuallyTab params={route?.params} isFocused={isFocused} />
                     :
 
                     <>

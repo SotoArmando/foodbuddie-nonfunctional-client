@@ -1,11 +1,11 @@
 import { Image, View } from "react-native";
-import { useComponentStyles } from "../providers/StyleProvider";
-import PrerenderedText from "../abstract/PrerenderedTextView";
+import { useComponentStyles } from "../../../providers/StyleProvider";
+import PrerenderedText from "../../../abstract/PrerenderedTextView";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useSession } from "../providers/SessionProvider";
+import { useSession } from "../../../providers/SessionProvider";
 import { useEffect } from "react";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { useScreenRoutes } from "../providers/NavigationProvider";
+import { useScreenRoutes } from "../../../providers/NavigationProvider";
 import Animated, {
     useSharedValue,
     useAnimatedStyle,

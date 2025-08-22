@@ -10,7 +10,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { useScreenRoutes } from "../providers/NavigationProvider";
 import { useEffect, useState } from "react";
 import { CommonRectButton } from "../components/CommonRectButton";
-import { useRecipes } from "./RecipesContainer";
+import { useRecipes } from "./modulate/recipes/container/RecipesContainer";
 import chunk from 'chunk-text';
 const RowStyle: ViewStyle = { display: 'flex', flexDirection: 'row' };
 
@@ -76,7 +76,7 @@ export const Home = () => {
     } = useComponentStyles('Home');
 
     const { goToRecipeDetails, navigation } = useScreenRoutes();
-    const { recipes, loading } = useRecipes('https://ampland-fortune-bouquet-structural.trycloudflare.com/recipes');
+    const { recipes, loading } = useRecipes('https://antonio-constant-intranet-field.trycloudflare.com/recipes');
 
     const [horizontalisScrolling, setIsHorizontalScrolling] = useState(false);
     useEffect(() => {

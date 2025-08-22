@@ -1,15 +1,15 @@
 import { Image, Switch, Pressable, View } from "react-native";
-import { useComponentStyles } from "../providers/StyleProvider";
-import PrerenderedText from "../abstract/PrerenderedTextView";
+import { useComponentStyles } from "../../../providers/StyleProvider";
+import PrerenderedText from "../../../abstract/PrerenderedTextView";
 import { useState } from "react";
-import { scale } from "../abstract/StyleProvider";
-import { TimePickerField } from "../abstract/Datetimepicker";
-import { preferences_icons } from "../abstract/Preferences";
+import { scale } from "../../../abstract/StyleProvider";
+import { TimePickerField } from "../../../abstract/Datetimepicker";
+import { preferences_icons } from "../../../abstract/Preferences";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { transform } from "../helpers/styleStringHelper";
-import { useScreenRoutes } from "../providers/NavigationProvider";
+import { transform } from "../../../helpers/styleStringHelper";
+import { useScreenRoutes } from "../../../providers/NavigationProvider";
 import { RectButton } from "react-native-gesture-handler";
-import { CommonRectButton } from "../components/CommonRectButton";
+import { CommonRectButton } from "../../../components/CommonRectButton";
 
 const usePreferencesStage = () => {
 

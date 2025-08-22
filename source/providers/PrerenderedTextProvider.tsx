@@ -47,7 +47,7 @@ export const PrerenderCacheProvider: React.FC<{ children: ReactNode }> = ({ chil
       const newLocal = TextImageAsBody({ ...props, anchor: props.anchor || 'start' });
       // console.log(newLocal);
       const promise = fetch(
-        'https://ampland-fortune-bouquet-structural.trycloudflare.com/generate-svg',
+        'https://antonio-constant-intranet-field.trycloudflare.com/generate-svg',
         {
           method: 'POST',
           headers: {
@@ -57,7 +57,7 @@ export const PrerenderCacheProvider: React.FC<{ children: ReactNode }> = ({ chil
         }
       ).then(async (response) => {
         const data = await response.json();
-        const fullUrl = 'https://ampland-fortune-bouquet-structural.trycloudflare.com' + data.imageUrl;
+        const fullUrl = 'https://antonio-constant-intranet-field.trycloudflare.com' + data.imageUrl;
         console.log(data);
         setTimeout(() => {
           urlCache.current.set(cacheKey, fullUrl);
