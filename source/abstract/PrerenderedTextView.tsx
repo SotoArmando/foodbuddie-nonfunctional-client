@@ -54,6 +54,7 @@ const usePrerenderedTextUrl = (props: TextImage) => {
       props.preloadColor.forEach(e => {
         getPrerenderedUrl({ ...props, style: { ...props.style, color: e.color, fontWeight: e.fontWeight } } as any).then(v => {
           setPreloaded([...preloaded, v])
+          FastImage.preload(preloaded.map(e => ({ uri: e })));
         })
       })
     }
