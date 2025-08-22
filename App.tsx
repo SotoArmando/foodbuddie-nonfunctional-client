@@ -28,7 +28,7 @@ function App(): React.JSX.Element {
 
   return (
     <>
-      <StrictMode>
+      {/* <StrictMode> */}
         <StyleProvider>
           <SessionProvider initialSessionState={true}>
               <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#FDFEF4' }}>
@@ -36,7 +36,7 @@ function App(): React.JSX.Element {
               </GestureHandlerRootView>
           </SessionProvider>
         </StyleProvider>
-      </StrictMode>
+      {/* </StrictMode> */}
     </>
   );
 }
