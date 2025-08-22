@@ -52,7 +52,7 @@ const useDayListContainer = (props) => {
         isThird={id % 7 === 2}
         current={day === id}
         // extraGapLeft={extraGapLeft}
-        isFocused={isFocused}
+        isFocused={true}
         handleClick={updateDay2}
         progress={progress}
         index={id}
