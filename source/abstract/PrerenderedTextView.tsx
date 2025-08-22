@@ -96,7 +96,7 @@ const PrerenderedText: React.FC<TextImage> = (props = {
       width: props.style?.width || scale(props.width || 200),
       // backgroundColor: isFocused ? 'transparent' :  props.style?.color
     }}>
-      {url && cIsFocused && (
+      {url  && (
         <FastImage
           resizeMode={FastImage.resizeMode.contain}
           source={{ uri: url }}
