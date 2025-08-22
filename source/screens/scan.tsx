@@ -8,9 +8,9 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { RectButton } from "react-native-gesture-handler";
 import RNFS from "react-native-fs";
 import { useScreenRoutes } from "../providers/NavigationProvider";
-import { ManuallyTab } from "./abstract/scanner/manuallytab";
 import { useIsFocused } from "@react-navigation/native";
 import { CommonRectButton } from "../components/CommonRectButton";
+import { ManuallyTab } from "./modulate/scanner/manuallytab";
 
 const usePerplexity = () => {
 
