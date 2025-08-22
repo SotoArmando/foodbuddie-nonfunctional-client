@@ -79,13 +79,7 @@ const useDayListContainer = (props) => {
 
     useEffect(() => {
         setTimeout(() => {
-            progress.value = withSpring(1, {
-                stiffness: 15, // Adjust stiffness for the spring
-                damping: 3, // Adjust damping for the spring
-                mass: 1 / 20, // Adjust mass for the spring
-                restDisplacementThreshold: 0.001, // When to stop the animation
-                restSpeedThreshold: 0.001, // Speed threshold to stop the animation
-            });
+            progress.value = 1;
         }, 300)
     }, [day])
 
