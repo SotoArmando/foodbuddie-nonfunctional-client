@@ -275,8 +275,10 @@ export const Home = () => {
 
                                 })} />
 
-                                <View pointerEvents="none">
+                                <View pointerEvents="none" style={{position: 'relative'}}>
                                     <Image source={{ uri: item["Alt Picture-src"] || (item.Picture.length > 0 && item.Picture) || "https://i.imgur.com/Pk1U5Jx.png" }} style={HomeLeftOverSuggestionsMealsItemPicture} />
+                                    <Image source={{ uri: "https://i.imgur.com/tuYt3ct.png" }} style={{...HomeLeftOverSuggestionsMealsItemPicture, opacity: 0.17, backgroundColor: "#FF8D51", position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
+                                
                                 </View>
                                 <View pointerEvents="none" style={HomeLeftOverSuggestionsMealsItemTextContainer}>
                                     <PrerenderedText
