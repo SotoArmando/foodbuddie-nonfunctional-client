@@ -1,13 +1,13 @@
 import { Image, ImageBackground, Pressable, Text, View } from "react-native"
-import { useComponentStyles } from "../providers/StyleProvider"
 import { useMemo, useState } from "react"
-import PrerenderedText from "../abstract/PrerenderedTextView"
-import { scale } from "../abstract/StyleProvider"
 import { useIsFocused, useNavigation } from "@react-navigation/native"
-import { transform } from "../helpers/styleStringHelper"
-import { useScreenRoutes } from "../providers/NavigationProvider"
 import { RectButton } from "react-native-gesture-handler"
-import { CommonRectButton } from "../components/CommonRectButton"
+import { useComponentStyles } from "../../../providers/StyleProvider"
+import { useScreenRoutes } from "../../../providers/NavigationProvider"
+import { scale } from "../../../abstract/StyleProvider"
+import PrerenderedText from "../../../abstract/PrerenderedTextView"
+import { transform } from "../../../helpers/styleStringHelper"
+import { CommonRectButton } from "../../../components/CommonRectButton"
 
 const OnboardingPhaseDisplayItemComponent = ({ active = false }) => {
     const {
@@ -138,7 +138,7 @@ export const Onboarding = () => {
                     <Image resizeMode="stretch" source={{ uri: 'https://i.imgur.com/oqJXQFs.png' }} style={{ position: 'absolute', opacity: 1, flex: 1, left: scale(-46), top: scale(-44), bottom: scale(-48), right: scale(-46), }} />
                     <Image source={{
                         uri: 'https://i.imgur.com/pRuBUBk.png', // Replace with any URL
-                    }} onPress={goToNext} resizeMode="stretch" style={{ position: 'absolute', opacity: 1, flex: 1, left: 0, top: 0, bottom: 0, right: 0, backgroundColor: '#FF8D51', borderRadius: scale(29), }} />
+                    }} resizeMode="stretch" style={{ position: 'absolute', opacity: 1, flex: 1, left: 0, top: 0, bottom: 0, right: 0, backgroundColor: '#FF8D51', borderRadius: scale(29), }} />
                 </View>
             </CommonRectButton>
         </View>
