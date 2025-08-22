@@ -5,29 +5,25 @@ import {
     // useTheme,
 } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Dimensions, Image, View } from 'react-native';
-import { SplashScreen } from '../screens/splashscreen';
-import { Onboarding } from '../screens/onboarding';
-import { SignUp } from '../screens/signup';
-import { Preferences } from '../screens/modulate/splashscreen/preferences';
+import { Dimensions } from 'react-native';
+import { SplashScreen } from '../screens/splash';
+import { Preferences } from '../screens/modulate/splash/preferences';
 import { AllSet } from '../screens/modulate/status/allset';
 import { Home } from '../screens/home';
 import { Planning } from '../screens/planning';
 import { Pantry } from '../screens/pantry';
 import { Recipes } from '../screens/recipes';
 import { Profile } from '../screens/profile';
-import { screensLayoutStyles } from './screens_layout';
 import { SkiaTutorial } from '../screens/modulate/bottomnavbar/morphtestskia';
 import { PlannerAdd } from '../screens/modulate/planner/planner_add';
-import { SearchScreen } from '../screens/searchsmodal';
+import { SearchScreen } from '../screens/search';
 import { RecipesDetails } from '../screens/modulate/recipes/recipedetail';
-import { NavigationProvider, useScreenRoutes } from '../providers/NavigationProvider';
-import { useCallback } from 'react';
-import debounce from 'lodash.debounce';
+import { NavigationProvider } from '../providers/NavigationProvider';
 import { PrerenderCacheProvider } from '../providers/PrerenderedTextProvider';
-import { Scanner } from '../screens/scanner';
+import { Scanner } from '../screens/scan';
 import { LoadScreen } from '../screens/modulate/status/loadscreen';
-import { scale } from '../abstract/StyleProvider';
+import { Onboarding } from '../screens/modulate/splash/onboarding';
+import { SignUp } from '../screens/modulate/splash/signup';
 type RootStackParamList = any;
 
 const MyTabs = createBottomTabNavigator<RootStackParamList>({
@@ -36,7 +32,7 @@ const MyTabs = createBottomTabNavigator<RootStackParamList>({
 });
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-const sceneInterpolator1 = ({ current }) => ({
+const sceneInterpolator1 = ({ current }: { current: any }) => ({
     sceneStyle: {
         // transform: [
         //     {
@@ -55,7 +51,7 @@ const sceneInterpolator1 = ({ current }) => ({
     },
 });
 
-const sceneInterpolator = ({ current }) => ({
+const sceneInterpolator = ({ current }: { current: any }) => ({
     sceneStyle: {
         transform: [
             {
@@ -92,22 +88,21 @@ const screenOptionsConfig: any = {
     transitionSpec: {
         animation: 'spring',
         config: {
-        // velocity: 0.02,
-        stiffness: 75, // Adjust stiffness for the spring
-        damping: 13, // Adjust damping for the spring
-        mass: 0.3, // Adjust mass for the spring
-        overshootClamping: true, // Prevent overshooting
-        restDisplacementThreshold: 0.001, // When to stop the animation
-        restSpeedThreshold: 0.001, // Speed threshold to stop the animation
+            // velocity: 0.02,
+            stiffness: 75, // Adjust stiffness for the spring
+            damping: 13, // Adjust damping for the spring
+            mass: 0.3, // Adjust mass for the spring
+            overshootClamping: true, // Prevent overshooting
+            restDisplacementThreshold: 0.001, // When to stop the animation
+            restSpeedThreshold: 0.001, // Speed threshold to stop the animation
         },
     },
     sceneStyleInterpolator: sceneInterpolator,
 };
 
-const CommonLayout = ({ children }) => {
+const CommonLayout = ({ children }: { children: any }) => {
     return <PrerenderCacheProvider >
         {children}
-
     </PrerenderCacheProvider>
 }
 export const AppLayout = () => {
@@ -129,7 +124,7 @@ function BottomNavigation() {
     return <MyTabs.Navigator
         screenLayout={CommonLayout}
 
-        screenOptions={{ ...screenOptionsConfig,  }}
+        screenOptions={{ ...screenOptionsConfig, }}
         initialRouteName='Home'
         tabBar={props => <>
             {/* <Text>asd11</Text> */}
@@ -215,20 +210,22 @@ function BottomNavigation() {
                 options={{ title: 'Profile', }} />
         </MyTabs.Group>
 
-        <MyTabs.Group screenOptions={{ ...screenOptionsConfig, sceneStyleInterpolator: sceneInterpolator1, 
+        <MyTabs.Group screenOptions={{
+            ...screenOptionsConfig, sceneStyleInterpolator: sceneInterpolator1,
             transitionSpec: {
                 animation: 'spring',
                 config: {
-                // velocity: 0.02,
-                       stiffness: 15, // Adjust stiffness for the spring
-                damping: 3, // Adjust damping for the spring
-                mass: 1 / 200, // Adjust mass for the spring
-                restDisplacementThreshold: 0.001, // When to stop the animation
-                restSpeedThreshold: 0.001, // Speed threshold to stop the animation
+                    // velocity: 0.02,
+                    stiffness: 15, // Adjust stiffness for the spring
+                    damping: 3, // Adjust damping for the spring
+                    mass: 1 / 200, // Adjust mass for the spring
+                    restDisplacementThreshold: 0.001, // When to stop the animation
+                    restSpeedThreshold: 0.001, // Speed threshold to stop the animation
                 },
             }
-            
-            , lazy: true }}>
+
+            , lazy: true
+        }}>
             <MyTabs.Screen
                 name="PlannerAdd"
                 component={PlannerAdd}
