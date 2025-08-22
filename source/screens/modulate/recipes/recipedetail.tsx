@@ -194,7 +194,7 @@ export const RecipesDetails = () => {
                     <PrerenderedText viewStyle={{ transform: transform(1.75, 0) }} isFocused={isFocused} lines={['Nutrition Info. (per serving)']} width={218} height={24} style={RecipeDetailNutritionColContainerLabel} />
                     <View style={RecipeDetailNutritionRowContainer}>
                         <ImageBackground resizeMode="stretch" source={{ uri: 'https://i.imgur.com/GqL8tDE.png' }} style={RecipeDetailNutritionEllipseProgressContainer}>
-                            <PrerenderedText isFocused={isFocused} lines={['434 Cal']} width={93} height={36} style={RecipeDetailNutritionEllipseProgressLabel}></PrerenderedText>
+                            <PrerenderedText isFocused={isFocused} lines={['434 Cal']} width={93} height={36} style={RecipeDetailNutritionEllipseProgressLabel} viewStyle={{transform: transform(3,0)}}></PrerenderedText>
                         </ImageBackground>
                         <View style={{ ...RecipeDetailNutritionLabelsColContainer, transform: transform(-1.75, 0.5) }}>
                             {/* Nutrition info label item */}
