@@ -179,7 +179,16 @@ export const ScreensLayout = () => {
                 resizeMode="stretch"
             />
         </View>
-       
+        <View pointerEvents="none" style={screensLayoutStyles.overlay}>
+            <Image
+                style={[screensLayoutStyles.filterImage, { opacity: 1, transform: 'rotate(0deg)' }]}
+                
+                source={{
+                    uri: 'https://i.imgur.com/9RKE3La.png', // Replace with any URL
+                }}
+                resizeMode="stretch"
+            />
+        </View>
         
         <View pointerEvents="none" style={{...screensLayoutStyles.overlay, opacity: 0.01, backgroundColor: '#0011FF'}}>
         
