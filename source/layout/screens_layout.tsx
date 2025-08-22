@@ -184,7 +184,7 @@ export const ScreensLayout = () => {
                 style={[screensLayoutStyles.filterImage, { opacity: 0.3, transform: 'rotate(0deg)' }]}
                 
                 source={{
-                    uri: 'https://i.imgur.com/9RKE3La.png', // Replace with any URL
+                    uri: 'https://i.imgur.com/EZdC09A.png', // Replace with any URL
                 }}
                 resizeMode="stretch"
             />
