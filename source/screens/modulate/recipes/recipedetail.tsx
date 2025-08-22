@@ -89,8 +89,11 @@ export const RecipesDetails = () => {
                     </View>
                     {/* <Image source={{ uri: 'https://i.imgur.com//Nu3ebOB.png' }}  resizeMode='contain' style={{ position: 'absolute', opacity: 0.5, width: 'auto', maxHeight: scale(36), left: 0, top: 0, bottom: 0, right: 0 }} /> */}
                 </View>
+                <View style={{ position: 'relative' }}>
+                    <Image source={{ uri: 'https://www.tastemade.com/_next/image?url=https%3A%2F%2Fassets.tastemadecdn.net%2Fimages%2F7c343b%2Ff042ac4a138000706335%2F4b8242.webp&w=640&q=50' }} style={RecipeDetailPictureScreen} />
+                    <Image source={{ uri: "https://i.imgur.com/tuYt3ct.png" }} style={{ ...RecipeDetailPictureScreen, opacity: 0.17, backgroundColor: "#FF8D51", position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, marginBottom: 0 }} />
+                </View>
 
-                <Image source={{ uri: 'https://www.tastemade.com/_next/image?url=https%3A%2F%2Fassets.tastemadecdn.net%2Fimages%2F7c343b%2Ff042ac4a138000706335%2F4b8242.webp&w=640&q=50' }} style={RecipeDetailPictureScreen} />
                 <PrerenderedText
                     width={361}
                     height={24 * chunk(recipeDescription, 42).length}
@@ -194,7 +197,7 @@ export const RecipesDetails = () => {
                     <PrerenderedText viewStyle={{ transform: transform(1.75, 0) }} isFocused={isFocused} lines={['Nutrition Info. (per serving)']} width={218} height={24} style={RecipeDetailNutritionColContainerLabel} />
                     <View style={RecipeDetailNutritionRowContainer}>
                         <ImageBackground resizeMode="stretch" source={{ uri: 'https://i.imgur.com/GqL8tDE.png' }} style={RecipeDetailNutritionEllipseProgressContainer}>
-                            <PrerenderedText isFocused={isFocused} lines={['434 Cal']} width={93} height={36} style={RecipeDetailNutritionEllipseProgressLabel} viewStyle={{transform: transform(2,0)}}></PrerenderedText>
+                            <PrerenderedText isFocused={isFocused} lines={['434 Cal']} width={93} height={36} style={RecipeDetailNutritionEllipseProgressLabel} viewStyle={{ transform: transform(2, 0) }}></PrerenderedText>
                         </ImageBackground>
                         <View style={{ ...RecipeDetailNutritionLabelsColContainer, transform: transform(-1.75, 0.5) }}>
                             {/* Nutrition info label item */}
@@ -225,16 +228,16 @@ export const RecipesDetails = () => {
                     {/* <Image source={{ uri: 'https://i.imgur.com/uuTpoRl.png' }} resizeMode='contain' style={{ position: 'absolute', opacity: 0.5, width: 'auto', maxHeight: scale(204), left: 0, top: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0,0,244,0)' }} /> */}
                 </View>
                 <View style={RecipeDetailIngredientsColContainer}>
-                    <View style={{ maxHeight: scale(59), position: 'relative', backgroundColor: '' , marginTop: scale(11)}}>
+                    <View style={{ maxHeight: scale(59), position: 'relative', backgroundColor: '', marginTop: scale(11) }}>
 
                         <View style={RecipeDetailIngredientsColContainerTitleRowContainer} >
-                            <PrerenderedText viewStyle={{transform: transform(-0.5, -0.5)}} isFocused={isFocused} lines={['Ingredients']} width={92} height={24} style={RecipeDetailIngredientsColContainerTitle}></PrerenderedText>
+                            <PrerenderedText viewStyle={{ transform: transform(-0.5, -0.5) }} isFocused={isFocused} lines={['Ingredients']} width={92} height={24} style={RecipeDetailIngredientsColContainerTitle}></PrerenderedText>
                             <View style={RecipeDetailIngredientsColContainerViewLessRow}>
-                                <PrerenderedText viewStyle={{transform: transform(-1, 1.5)}} isFocused={isFocused} lines={['View less']} width={65} height={21} style={RecipeDetailIngredientsColContainerViewLess} />
+                                <PrerenderedText viewStyle={{ transform: transform(-1, 1.5) }} isFocused={isFocused} lines={['View less']} width={65} height={21} style={RecipeDetailIngredientsColContainerViewLess} />
                                 <Image source={{ uri: 'https://i.imgur.com/Hu3FlIM.png' }} style={RecipeDetailIngredientsColContainerViewLessIcon} />
                             </View>
                         </View>
-                        <PrerenderedText viewStyle={{transform: transform(-2, 1.5)}} isFocused={isFocused} viewStyle={{ marginBottom: scale(2), marginTop: scale(14) }} lines={['Dry ingredients']} style={RecipeDetailIngredientsColContainerSubTitle} />
+                        <PrerenderedText viewStyle={{ transform: transform(-2, 1.5) }} isFocused={isFocused} viewStyle={{ marginBottom: scale(2), marginTop: scale(14) }} lines={['Dry ingredients']} style={RecipeDetailIngredientsColContainerSubTitle} />
                         {/* <Image source={{ uri: 'https://i.imgur.com/BEaxzwA.png' }}  resizeMode='contain' style={{ position: 'absolute', opacity: 0.5, width: 'auto', maxHeight: scale(59), left: 0, top: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0,0,255,0)' }} /> */}
                     </View>
                     <View style={RecipeDetailIngredientsColContainerGrid4xH} >
