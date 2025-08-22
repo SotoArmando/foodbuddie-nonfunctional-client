@@ -52,7 +52,7 @@ const useDayListContainer = (props) => {
         isThird={id % 7 === 2}
         current={day === id}
         // extraGapLeft={extraGapLeft}
-        isFocused={true}
+        isFocused={isFocused}
         handleClick={updateDay2}
         progress={progress}
         index={id}
@@ -471,6 +471,8 @@ function PlannerDaysRowElementW({
         borderColor: "#F09C33",
     }]} />, [current]);
 
+    console.log(isFocused);
+    
     return <CommonRectButton onPress={newLocal} style={[{ ...active ? PlannerDaysRowElement : PlannerDaysRowElementInactive, marginLeft: scale(extraGapLeft), marginRight: scale(extraGapRight), position: 'relative', overflow: 'visible', width: (screenWidth - (scale(32))) / 6.5 }]}>
         {focus}
         <PrerenderedText
