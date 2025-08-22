@@ -126,7 +126,7 @@ const DayListContainer = (props = { isFocused: true }) => {
                 showsHorizontalScrollIndicator={false}
                 snapToAlignment="start"
                 // style={{overflow: 'visible'}}
-                windowSize={3}
+                windowSize={1}
                 horizontal
                 data={newLocal_3} renderItem={newLocal} />
 
@@ -463,7 +463,7 @@ function PlannerDaysRowElementW({
         PlannerDaysRowElementDayActive,
         PlannerDaysRowElementDot,
     } = useComponentStyles('Planner');
-    console.log('am rerendering', dayLabel, dayNumber)
+    // console.log('am rerendering', dayLabel, dayNumber)
 
     const newLocal = useCallback(async () => handleClick(index), [current]);
     const focus = useMemo(() => current && <Animated.View style={[{ position: 'absolute', left: scale(-2), right: scale(-1), top: scale(4), bottom: scale(-8), borderRadius: scale(16) }, animatedStyle, { display: current ? 'flex' : 'none' }, {
