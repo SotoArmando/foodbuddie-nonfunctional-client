@@ -78,13 +78,15 @@ const useDayListContainer = (props) => {
     ];
 
     useEffect(() => {
-        progress.value = withSpring(1, {
-            stiffness: 15, // Adjust stiffness for the spring
-            damping: 3, // Adjust damping for the spring
-            mass: 1 / 20, // Adjust mass for the spring
-            restDisplacementThreshold: 0.001, // When to stop the animation
-            restSpeedThreshold: 0.001, // Speed threshold to stop the animation
-        });
+        setTimeout(() => {
+            progress.value = withSpring(1, {
+                stiffness: 15, // Adjust stiffness for the spring
+                damping: 3, // Adjust damping for the spring
+                mass: 1 / 20, // Adjust mass for the spring
+                restDisplacementThreshold: 0.001, // When to stop the animation
+                restSpeedThreshold: 0.001, // Speed threshold to stop the animation
+            });
+        }, 200)
     }, [day])
 
 
@@ -109,12 +111,12 @@ const DayListContainer = (props = { isFocused: true }) => {
                 // windowSize={1}
                 // initialNumToRender={5}
                 // maxToRenderPerBatch={5}
-                snapToInterval={(screenWidth * 1.07692307692 ) - (scale(32))}
+                snapToInterval={(screenWidth * 1.07692307692) - (scale(32))}
                 removeClippedSubviews={true}
                 style={{ overflow: 'visible', marginLeft: scale(-8), paddingBottom: 16 }}
                 contentContainerStyle={PlannerDaysRow}
                 bounces={true}
-                
+
                 alwaysBounceHorizontal={true}
                 // snapToInterval={scale(24 + 31)}
                 // snapToOffsets={[0, scale(55), scale(113), scale(171), scale(227), scale(282), scale(337)]}
@@ -475,7 +477,7 @@ function PlannerDaysRowElementW({
     return <CommonRectButton onPress={newLocal} style={[{ ...active ? PlannerDaysRowElement : PlannerDaysRowElementInactive, marginLeft: scale(extraGapLeft), marginRight: scale(extraGapRight), position: 'relative', overflow: 'visible', width: (screenWidth - (scale(32))) / 6.5 }]}>
         {focus}
         <PrerenderedText
-            style={{...PlannerDaysRowElementTitle, color: "#000"}}
+            style={{ ...PlannerDaysRowElementTitle, color: "#000" }}
             anchor="middle"
             lines={[dayNumber]}
             width={24}
@@ -489,7 +491,7 @@ function PlannerDaysRowElementW({
         />
 
         <PrerenderedText
-            style={{...PlannerDaysRowElementDay , color: "#000"}}
+            style={{ ...PlannerDaysRowElementDay, color: "#000" }}
             anchor="middle"
             lines={[dayLabel]}
             width={32}

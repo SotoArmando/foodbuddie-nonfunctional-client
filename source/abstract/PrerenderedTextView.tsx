@@ -100,8 +100,9 @@ const PrerenderedText: React.FC<TextImage> = (props = {
       width: props.style?.width || scale(props.width || 200),
       // backgroundColor: isFocused ? 'transparent' :  props.style?.color
     }}>
-      {url && cIsFocused && (
-        <FastImage
+      {url && cIsFocused && <>
+        
+        {!pStyles && <FastImage
           resizeMode={FastImage.resizeMode.contain}
           source={{ uri: url }}
           style={{
@@ -114,21 +115,8 @@ const PrerenderedText: React.FC<TextImage> = (props = {
             display: props.style?.display,
             ...props.imageStyle,
           }}
-        />
-
-        // <Image
-        //   source={{uri: , cache: 'force-cache'}}
-        //   style={{
-        //     width: ,
-        //     height: ,
-        //     opacity: props.style?.opacity,
-
-        //     // backgroundColor:'red'
-        //   }}
-
-        //   resizeMode={props.isIcon ? 'contain' : 'contain'}
-        // />
-      )}
+        />}
+      </>}
     </View>
 
   );
