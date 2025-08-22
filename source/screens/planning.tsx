@@ -109,13 +109,13 @@ const DayListContainer = (props = { isFocused: true }) => {
                 // windowSize={1}
                 // initialNumToRender={5}
                 // maxToRenderPerBatch={5}
-                snapToInterval={(screenWidth * 1.07692307692 ) - (scale(32))}
+                snapToInterval={(screenWidth * 1.07692307692) - (scale(32))}
                 removeClippedSubviews={true}
                 style={{ overflow: 'visible', marginLeft: scale(-8), paddingBottom: 16 }}
                 contentContainerStyle={PlannerDaysRow}
                 bounces={true}
                 // extraData={isFocused}
-                
+
                 alwaysBounceHorizontal={true}
                 // snapToInterval={scale(24 + 31)}
                 // snapToOffsets={[0, scale(55), scale(113), scale(171), scale(227), scale(282), scale(337)]}
@@ -136,7 +136,7 @@ const DayListContainer = (props = { isFocused: true }) => {
     </>
 }
 
-const PlannerMealRowComponent = ({ isFocused } : {isFocused: boolean}) => {
+const PlannerMealRowComponent = ({ isFocused }: { isFocused: boolean }) => {
     const {
         PlannerMealRow,
         PlannerMealRowElement,
@@ -477,8 +477,8 @@ function PlannerDaysRowElementW({
     return <CommonRectButton onPress={newLocal} style={[{ ...active ? PlannerDaysRowElement : PlannerDaysRowElementInactive, marginLeft: scale(extraGapLeft), marginRight: scale(extraGapRight), position: 'relative', overflow: 'visible', width: (screenWidth - (scale(32))) / 6.5 }]}>
         {focus}
         <PrerenderedText
-            key={isFocused.toString()}
-            style={{...PlannerDaysRowElementTitle, color: "#000"}}
+            key={`${dayNumber}${isFocused.toString()}`}
+            style={{ ...PlannerDaysRowElementTitle, color: "#000" }}
             anchor="middle"
             lines={[dayNumber]}
             width={24}
@@ -491,8 +491,8 @@ function PlannerDaysRowElementW({
         />
 
         <PrerenderedText
-            key={isFocused.toString()}
-            style={{...PlannerDaysRowElementDay , color: "#000"}}
+            key={`${dayLabel}${isFocused.toString()}`}
+            style={{ ...PlannerDaysRowElementDay, color: "#000" }}
             anchor="middle"
             lines={[dayLabel]}
             width={32}
