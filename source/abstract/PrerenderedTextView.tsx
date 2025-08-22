@@ -82,7 +82,9 @@ const PrerenderedText: React.FC<TextImage> = (props = {
         setcIsFocused(isFocused)
       }, timeout || 350);
     } else {
-      setcIsFocused(false)
+      if (cIsFocused !== isFocused) {
+        setcIsFocused(isFocused)
+      }
     }
 
   }, [isFocused]);
