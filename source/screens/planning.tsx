@@ -67,7 +67,7 @@ const useDayListContainer = (props) => {
     const newLocal_2 = useCallback((item, item_i) => {
 
         console.log(`${item_i.toString()}_${(day === item_i).toString()}`);
-        return `${item_i.toString()}_${(day === item_i).toString()}}`;
+        return `${item_i.toString()}_${(day === item_i).toString()}`;
     }, [day]);
 
     const newLocal_3 = [
