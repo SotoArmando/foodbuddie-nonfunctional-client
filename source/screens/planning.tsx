@@ -66,8 +66,8 @@ const useDayListContainer = (props) => {
 
     const newLocal_2 = useCallback((item, item_i) => {
 
-        console.log(`${item_i.toString()}_${(day === item_i).toString()}`);
-        return `${item_i.toString()}_${(day === item_i).toString()}`;
+        // console.log(`${item_i.toString()}_${(day === item_i).toString()}`);
+        return `${item_i.toString()}_${(day === item_i).toString()}}`;
     }, [day]);
 
     const newLocal_3 = [
@@ -472,7 +472,7 @@ function PlannerDaysRowElementW({
     }]} />, [current]);
 
 
-    return <CommonRectButton key={`${index}_${PlannerDaysRowElementTitle}_${current.toString()}`} onPress={newLocal} style={[{ ...active ? PlannerDaysRowElement : PlannerDaysRowElementInactive, marginLeft: scale(extraGapLeft), marginRight: scale(extraGapRight), position: 'relative', overflow: 'visible', width: (screenWidth - (scale(32))) / 6.5 }]}>
+    return <CommonRectButton onPress={newLocal} style={[{ ...active ? PlannerDaysRowElement : PlannerDaysRowElementInactive, marginLeft: scale(extraGapLeft), marginRight: scale(extraGapRight), position: 'relative', overflow: 'visible', width: (screenWidth - (scale(32))) / 6.5 }]}>
         {focus}
         <PrerenderedText
             style={{...PlannerDaysRowElementTitle, color: "#000"}}
