@@ -222,7 +222,7 @@ export const RecipesDetails = () => {
                         </View>
 
                     </View>
-                    <Image source={{ uri: 'https://i.imgur.com/uuTpoRl.png' }} resizeMode='contain' style={{ position: 'absolute', opacity: 0.5, width: 'auto', maxHeight: scale(204), left: 0, top: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0,0,244,0)' }} />
+                    {/* <Image source={{ uri: 'https://i.imgur.com/uuTpoRl.png' }} resizeMode='contain' style={{ position: 'absolute', opacity: 0.5, width: 'auto', maxHeight: scale(204), left: 0, top: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0,0,244,0)' }} /> */}
                 </View>
                 <View style={RecipeDetailIngredientsColContainer}>
                     <View style={{ maxHeight: scale(59), position: 'relative', backgroundColor: '' , marginTop: scale(11)}}>
