@@ -485,7 +485,7 @@ function PlannerDaysRowElementW({
             height={24}
             viewStyle={{ transform: transform(active ? 1 : 0, 0) }}
             quality={0.75}
-            isFocused={isFocused}
+            isFocused={true}
             preloadColor={[{ fontWeight: '700', color: '#fff' }]}
             pStyles={current ? 0 : undefined}
         />
@@ -499,7 +499,7 @@ function PlannerDaysRowElementW({
             viewStyle={{ transform: transform(active ? 1.25 : 0, 4.5) }}
             height={14}
             quality={0.75}
-            isFocused={isFocused}
+            isFocused={true}
             preloadColor={[{ fontWeight: '400', color: '#fff' }]}
             pStyles={current ? 0 : undefined}
         />
