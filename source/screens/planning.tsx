@@ -471,9 +471,8 @@ function PlannerDaysRowElementW({
         borderColor: "#F09C33",
     }]} />, [current]);
 
-    console.log(isFocused);
 
-    return <CommonRectButton onPress={newLocal} style={[{ ...active ? PlannerDaysRowElement : PlannerDaysRowElementInactive, marginLeft: scale(extraGapLeft), marginRight: scale(extraGapRight), position: 'relative', overflow: 'visible', width: (screenWidth - (scale(32))) / 6.5 }]}>
+    return <CommonRectButton key={`${index}_${PlannerDaysRowElementTitle}_${current.toString()}`} onPress={newLocal} style={[{ ...active ? PlannerDaysRowElement : PlannerDaysRowElementInactive, marginLeft: scale(extraGapLeft), marginRight: scale(extraGapRight), position: 'relative', overflow: 'visible', width: (screenWidth - (scale(32))) / 6.5 }]}>
         {focus}
         <PrerenderedText
             style={{...PlannerDaysRowElementTitle, color: "#000"}}
