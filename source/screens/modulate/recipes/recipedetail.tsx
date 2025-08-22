@@ -193,7 +193,7 @@ export const RecipesDetails = () => {
                 <View style={{ ...RecipeDetailNutritionColContainer, marginTop: scale(23) }}>
                     <PrerenderedText viewStyle={{ transform: transform(1.75, 0) }} isFocused={isFocused} lines={['Nutrition Info. (per serving)']} width={218} height={24} style={RecipeDetailNutritionColContainerLabel} />
                     <View style={RecipeDetailNutritionRowContainer}>
-                        <ImageBackground resizeMode="contain" source={{ uri: 'https://i.imgur.com/GqL8tDE.png' }} style={RecipeDetailNutritionEllipseProgressContainer}>
+                        <ImageBackground resizeMode="stretch" source={{ uri: 'https://i.imgur.com/GqL8tDE.png' }} style={RecipeDetailNutritionEllipseProgressContainer}>
                             <PrerenderedText isFocused={isFocused} lines={['434 Cal']} width={93} height={36} style={RecipeDetailNutritionEllipseProgressLabel}></PrerenderedText>
                         </ImageBackground>
                         <View style={{ ...RecipeDetailNutritionLabelsColContainer, transform: transform(-1.75, 0.5) }}>
