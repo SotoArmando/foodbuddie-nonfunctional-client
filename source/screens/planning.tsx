@@ -55,6 +55,7 @@ const useDayListContainer = (props) => {
         isFocused={isFocused}
         handleClick={updateDay2}
         progress={progress}
+        key={`${id}_${(day === id).toString()}`}
         index={id}
     />, [day]);
 
@@ -101,7 +102,7 @@ const DayListContainer = (props = { isFocused: true }) => {
         <View style={{ marginBottom: -16, }}>
             {isFocused && <Animated.FlatList
 
-                keyExtractor={newLocal_2}
+                // keyExtractor={newLocal_2}
                 // windowSize={1}
                 // initialNumToRender={5}
                 // maxToRenderPerBatch={5}
