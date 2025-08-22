@@ -1,11 +1,11 @@
 import { Image, Pressable, View } from "react-native"
-import { useComponentStyles } from "../providers/StyleProvider"
-import PrerenderedText from "../abstract/PrerenderedTextView"
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { transform } from "../helpers/styleStringHelper";
-import { useScreenRoutes } from "../providers/NavigationProvider";
 import { RectButton } from "react-native-gesture-handler";
-import { CommonRectButton } from "../components/CommonRectButton";
+import { useScreenRoutes } from "../../../providers/NavigationProvider";
+import { useComponentStyles } from "../../../providers/StyleProvider";
+import PrerenderedText from "../../../abstract/PrerenderedTextView";
+import { transform } from "../../../helpers/styleStringHelper";
+import { CommonRectButton } from "../../../components/CommonRectButton";
 const usePreferencesScreen = () => {
     const {goToPreferences} = useScreenRoutes();
 
