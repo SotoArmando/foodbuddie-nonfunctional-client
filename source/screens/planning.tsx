@@ -104,7 +104,7 @@ const DayListContainer = (props = { isFocused: true }) => {
     return <>
         <View style={{ marginBottom: -16, }}>
             {isFocused && <Animated.FlatList
-
+                key={`planningdates_${isFocused.toString()}`}
                 keyExtractor={newLocal_2}
                 // windowSize={1}
                 // initialNumToRender={5}
@@ -114,7 +114,7 @@ const DayListContainer = (props = { isFocused: true }) => {
                 style={{ overflow: 'visible', marginLeft: scale(-8), paddingBottom: 16 }}
                 contentContainerStyle={PlannerDaysRow}
                 bounces={true}
-                
+                extraData={isFocused}
                 alwaysBounceHorizontal={true}
                 // snapToInterval={scale(24 + 31)}
                 // snapToOffsets={[0, scale(55), scale(113), scale(171), scale(227), scale(282), scale(337)]}
@@ -135,7 +135,7 @@ const DayListContainer = (props = { isFocused: true }) => {
     </>
 }
 
-const PlannerMealRowComponent = ({ isFocused }) => {
+const PlannerMealRowComponent = ({ isFocused } : {isFocused: boolean}) => {
     const {
         PlannerMealRow,
         PlannerMealRowElement,
