@@ -73,7 +73,7 @@ const PrerenderedText: React.FC<TextImage> = (props = {
   preloadColor: []
 }) => {
   const { isFocused = false, timeout } = props;
-  const [cIsFocused, setcIsFocused] = useState(isFocused);
+  const [cIsFocused, setcIsFocused] = useState(false);
   const { url } = usePrerenderedTextUrl({ ...props, anchor: props.anchor || props.style?.anchor || 'start' });
 
   useEffect(() => {
