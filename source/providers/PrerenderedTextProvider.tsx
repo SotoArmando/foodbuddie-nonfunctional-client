@@ -58,7 +58,7 @@ export const PrerenderCacheProvider: React.FC<{ children: ReactNode }> = ({ chil
       ).then(async (response) => {
         const data = await response.json();
         const fullUrl = 'https://antonio-constant-intranet-field.trycloudflare.com' + data.imageUrl;
-        console.log(data);
+        // console.log(data);
         setTimeout(() => {
           urlCache.current.set(cacheKey, fullUrl);
         }, 0)
