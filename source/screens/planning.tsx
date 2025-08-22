@@ -104,18 +104,17 @@ const DayListContainer = (props = { isFocused: true }) => {
     return <>
         <View style={{ marginBottom: -16, }}>
             {isFocused && <Animated.FlatList
-                key={`planningdates_${isFocused.toString()}`}
+
                 keyExtractor={newLocal_2}
                 // windowSize={1}
                 // initialNumToRender={5}
                 // maxToRenderPerBatch={5}
-                snapToInterval={(screenWidth * 1.07692307692) - (scale(32))}
+                snapToInterval={(screenWidth * 1.07692307692 ) - (scale(32))}
                 removeClippedSubviews={true}
                 style={{ overflow: 'visible', marginLeft: scale(-8), paddingBottom: 16 }}
                 contentContainerStyle={PlannerDaysRow}
                 bounces={true}
-                // extraData={isFocused}
-
+                
                 alwaysBounceHorizontal={true}
                 // snapToInterval={scale(24 + 31)}
                 // snapToOffsets={[0, scale(55), scale(113), scale(171), scale(227), scale(282), scale(337)]}
@@ -136,7 +135,7 @@ const DayListContainer = (props = { isFocused: true }) => {
     </>
 }
 
-const PlannerMealRowComponent = ({ isFocused }: { isFocused: boolean }) => {
+const PlannerMealRowComponent = ({ isFocused }) => {
     const {
         PlannerMealRow,
         PlannerMealRowElement,
@@ -289,7 +288,7 @@ export const Planning = () => {
 
 
 
-                <PlannerMealRowComponent isFocused={isFocused} />
+                <PlannerMealRowComponent isFocused={true} />
                 <View style={{ ...PlannerTimeDayRow, position: 'relative', overflow: 'visible' }}>
                     <Image resizeMode="contain" source={{ uri: 'https://i.imgur.com/PS9zE1d.png' }} style={{ ...PlannerTimeDayRowIcon, transform: transform(-0.5, -0.5) }}></Image>
                     <PrerenderedText
@@ -477,29 +476,27 @@ function PlannerDaysRowElementW({
     return <CommonRectButton onPress={newLocal} style={[{ ...active ? PlannerDaysRowElement : PlannerDaysRowElementInactive, marginLeft: scale(extraGapLeft), marginRight: scale(extraGapRight), position: 'relative', overflow: 'visible', width: (screenWidth - (scale(32))) / 6.5 }]}>
         {focus}
         <PrerenderedText
-            key={`${dayNumber}${isFocused.toString()}`}
-            style={{ ...PlannerDaysRowElementTitle, color: "#000" }}
+            style={{...PlannerDaysRowElementTitle, color: "#000"}}
             anchor="middle"
             lines={[dayNumber]}
             width={24}
             height={24}
             viewStyle={{ transform: transform(active ? 1 : 0, 0) }}
             quality={0.75}
-            isFocused={true}
+            isFocused={isFocused}
             preloadColor={[{ fontWeight: '700', color: '#fff' }]}
             pStyles={current ? 0 : undefined}
         />
 
         <PrerenderedText
-            key={`${dayLabel}${isFocused.toString()}`}
-            style={{ ...PlannerDaysRowElementDay, color: "#000" }}
+            style={{...PlannerDaysRowElementDay , color: "#000"}}
             anchor="middle"
             lines={[dayLabel]}
             width={32}
             viewStyle={{ transform: transform(active ? 1.25 : 0, 4.5) }}
             height={14}
             quality={0.75}
-            isFocused={true}
+            isFocused={isFocused}
             preloadColor={[{ fontWeight: '400', color: '#fff' }]}
             pStyles={current ? 0 : undefined}
         />
