@@ -91,7 +91,7 @@ const PrerenderedText: React.FC<TextImage> = (props = {
 
   }, [isFocused]);
 
-  const images = cIsFocused ? [
+  const images = [
     <FastImage
       resizeMode={FastImage.resizeMode.contain}
       source={{ uri: url }}
@@ -118,7 +118,7 @@ const PrerenderedText: React.FC<TextImage> = (props = {
         ...props.imageStyle,
       }}
     />)
-  ] : []
+  ] 
 
   // console.log(props)
   return (
