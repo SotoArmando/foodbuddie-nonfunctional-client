@@ -76,7 +76,7 @@ const PrerenderedText: React.FC<TextImage> = (props = {
 }) => {
   const { isFocused = false, timeout, pStyles } = props;
   const [cIsFocused, setcIsFocused] = useState((pStyles && true) || false);
-  const { url } = usePrerenderedTextUrl({ ...props, anchor: props.anchor || props.style?.anchor || 'start' });
+  const { url, preloaded } = usePrerenderedTextUrl({ ...props, anchor: props.anchor || props.style?.anchor || 'start' });
 
   useEffect(() => {
     if (isFocused === true && cIsFocused !== isFocused) {
@@ -91,6 +91,34 @@ const PrerenderedText: React.FC<TextImage> = (props = {
 
   }, [isFocused]);
 
+  const images = [
+    <FastImage
+      resizeMode={FastImage.resizeMode.contain}
+      source={{ uri: url }}
+      style={{
+        height: props.style?.height || scale(props.height || 30),
+        minHeight: props.style?.height || scale(props.height || 30),
+        width: props.style?.width || scale(props.width || 200),
+        minWidth: props.style?.width || scale(props.width || 200),
+        backgroundColor: pStyles ? 'rgba(0,0,244,0.3)' : 'red',
+        display: props.pStyles !== undefined ? 'none' : props.style?.display,
+        ...props.imageStyle,
+      }}
+    />,
+    ...preloaded.map((e, ie) => <FastImage
+      resizeMode={FastImage.resizeMode.contain}
+      source={{ uri: e }}
+      style={{
+        height: props.style?.height || scale(props.height || 30),
+        minHeight: props.style?.height || scale(props.height || 30),
+        width: props.style?.width || scale(props.width || 200),
+        minWidth: props.style?.width || scale(props.width || 200),
+        backgroundColor: pStyles ? 'rgba(0,0,244,0.3)' : 'red',
+        display: ie === props.pStyles ? 'flex' : 'none',
+        ...props.imageStyle,
+      }}
+    />)
+  ]
 
   // console.log(props)
   return (
@@ -100,23 +128,7 @@ const PrerenderedText: React.FC<TextImage> = (props = {
       width: props.style?.width || scale(props.width || 200),
       // backgroundColor: isFocused ? 'transparent' :  props.style?.color
     }}>
-      {url && cIsFocused && <>
-        
-        {!pStyles && <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={{ uri: url }}
-          style={{
-            height: props.style?.height || scale(props.height || 30),
-            minHeight: props.style?.height || scale(props.height || 30),
-            width: props.style?.width || scale(props.width || 200),
-            minWidth: props.style?.width || scale(props.width || 200),
-
-            backgroundColor: pStyles ? 'rgba(0,0,244,0.3)' : 'red',
-            display: props.style?.display,
-            ...props.imageStyle,
-          }}
-        />}
-      </>}
+      {images}
     </View>
 
   );
