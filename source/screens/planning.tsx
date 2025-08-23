@@ -472,7 +472,7 @@ function PlannerDaysRowElementW({
     return <CommonRectButton onPress={newLocal} style={[{ ...active ? PlannerDaysRowElement : PlannerDaysRowElementInactive, marginLeft: scale(extraGapLeft), marginRight: scale(extraGapRight), position: 'relative', overflow: 'visible', width: (screenWidth - (scale(32))) / 6.5 }]}>
         {focus}
         <PrerenderedText
-            style={{ ...PlannerDaysRowElementTitle, color: "#000" }}
+            style={{ ...PlannerDaysRowElementTitle }}
             anchor="middle"
             lines={[dayNumber]}
             width={24}
@@ -486,7 +486,7 @@ function PlannerDaysRowElementW({
         />
 
         <PrerenderedText
-            style={{ ...PlannerDaysRowElementDay, color: "#000" }}
+            style={{ ...PlannerDaysRowElementDay}}
             anchor="middle"
             lines={[dayLabel]}
             width={32}
