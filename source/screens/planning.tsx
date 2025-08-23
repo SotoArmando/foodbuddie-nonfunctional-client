@@ -482,7 +482,7 @@ function PlannerDaysRowElementW({
             isFocused={isFocused}
             preloadColor={[{ fontWeight: '700', color: '#fff' }]}
             pStyles={current ? 0 : undefined}
-            timeout={0}
+            timeout={1000}
         />
 
         <PrerenderedText
@@ -496,7 +496,7 @@ function PlannerDaysRowElementW({
             isFocused={isFocused}
             preloadColor={[{ fontWeight: '400', color: '#fff' }]}
             pStyles={current ? 0 : undefined}
-            timeout={0}
+            timeout={1000}
         />
 
         <View style={{ ...PlannerDaysRowElementDot, backgroundColor: current ? "#FFF" : "#E1DDD4", transform: transform(active ? 1 : 0, 4.5), opacity: current ? 1 : 0 }}></View>
