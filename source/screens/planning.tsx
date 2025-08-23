@@ -482,7 +482,7 @@ function PlannerDaysRowElementW({
             isFocused={isFocused}
             preloadColor={[{ fontWeight: '700', color: '#fff' }]}
             pStyles={current ? 0 : undefined}
-            timeout={0}
+            timeout={0} 
         />
 
         <PrerenderedText
