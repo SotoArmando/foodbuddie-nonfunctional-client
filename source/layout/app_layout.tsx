@@ -57,7 +57,7 @@ const sceneInterpolator = ({ current }: { current: any }) => ({
             {
                 translateX: current.progress.interpolate({
                     inputRange: [-1, 0, 1], // Normalized progress range
-                    outputRange: [0, 0, screenWidth], // Corresponding translateX values
+                    outputRange: [0, 0, screenWidth * 3], // Corresponding translateX values
                 }),
             },
         ],
