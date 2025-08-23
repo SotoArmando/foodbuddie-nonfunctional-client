@@ -101,7 +101,7 @@ const PrerenderedText: React.FC<TextImage> = (props = {
         width: props.style?.width || scale(props.width || 200),
         minWidth: props.style?.width || scale(props.width || 200),
         // backgroundColor: pStyles ? 'rgba(0,0,244,0.3)' : 'red',
-        display:cIsFocused && (props.pStyles === undefined) ? props.style?.display : 'none',
+        display: props.pStyles !== undefined ? 'none' : props.style?.display,
         ...props.imageStyle,
       }}
     />,
@@ -114,11 +114,11 @@ const PrerenderedText: React.FC<TextImage> = (props = {
         width: props.style?.width || scale(props.width || 200),
         minWidth: props.style?.width || scale(props.width || 200),
         // backgroundColor: pStyles ? 'rgba(0,0,244,0.3)' : 'red',
-        display: cIsFocused && ie === props.pStyles ? 'flex' : 'none',
+        display: ie === props.pStyles ? 'flex' : 'none',
         ...props.imageStyle,
       }}
     />)
-  ] 
+  ]
 
   // console.log(props)
   return (
