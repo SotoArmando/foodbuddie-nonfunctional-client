@@ -111,7 +111,7 @@ const PrerenderedText: React.FC<TextImage> = (props = {
             width: props.style?.width || scale(props.width || 200),
             minWidth: props.style?.width || scale(props.width || 200),
 
-            // backgroundColor: 'rgba(0,0,244,0.3)',
+            backgroundColor: pStyles ? 'rgba(0,0,244,0.3)' : 'red',
             display: props.style?.display,
             ...props.imageStyle,
           }}
