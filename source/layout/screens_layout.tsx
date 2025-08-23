@@ -181,7 +181,7 @@ export const ScreensLayout = () => {
         </View>
         <View pointerEvents="none" style={screensLayoutStyles.overlay}>
             <Image
-                style={[screensLayoutStyles.filterImage, { opacity: 0.01, transform: 'rotate(0deg)' }]}
+                style={[screensLayoutStyles.filterImage, { opacity: 0.00001, transform: 'rotate(0deg)' }]}
                 
                 source={{
                     uri: 'https://i.imgur.com/EZdC09A.png', // Replace with any URL
