@@ -81,7 +81,7 @@ const useDayListContainer = (props) => {
     useEffect(() => {
         setTimeout(() => {
             progress.value = withSpring(1);
-        }, 300)
+        }, 0)
     }, [day])
 
 
