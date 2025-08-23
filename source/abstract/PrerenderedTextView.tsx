@@ -126,10 +126,13 @@ const PrerenderedText: React.FC<TextImage> = (props = {
       ...props.viewStyle,
       height: props.style?.height || scale(props.height || 30),
       width: props.style?.width || scale(props.width || 200),
-      display: cIsFocused ? 'flex':'none'
+      
       // backgroundColor: isFocused ? 'transparent' :  props.style?.color
     }}>
+      <View style={{display: cIsFocused ? 'flex':'none'}}>
       { images}
+
+      </View>
     </View>
 
   );
