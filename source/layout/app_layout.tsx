@@ -89,9 +89,9 @@ const screenOptionsConfig: any = {
         animation: 'spring',
         config: {
             // velocity: 0.02,
-            stiffness: 120, // Adjust stiffness for the spring
-            damping: 30, // Adjust damping for the spring
-            mass: 0.3 * 6, // Adjust mass for the spring
+            stiffness: 374, // Adjust stiffness for the spring
+            damping: 97, // Adjust damping for the spring
+            mass: 3.6, // Adjust mass for the spring
             overshootClamping: true, // Prevent overshooting
             restDisplacementThreshold: 0.001, // When to stop the animation
             restSpeedThreshold: 0.001, // Speed threshold to stop the animation
