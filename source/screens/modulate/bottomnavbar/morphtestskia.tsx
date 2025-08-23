@@ -67,11 +67,11 @@ export const SkiaTutorial = () => {
   const circleOpacity = useDerivedValue(() => progressO.value);
   const circleYPosition = useDerivedValue(() => progressO.value * 20);
   const imageShadow = useImage("https://i.imgur.com/zHwObzo.png");
-  const label0 = useImage("https://antonio-constant-intranet-field.trycloudflare.com/static/3169106085.webp");
-  const label1 = useImage("https://antonio-constant-intranet-field.trycloudflare.com/static/3834523372.webp");
-  const label2 = useImage("https://antonio-constant-intranet-field.trycloudflare.com/static/3838130273.webp");
-  const label3 = useImage("https://antonio-constant-intranet-field.trycloudflare.com/static/3936234647.webp");
-  const label4 = useImage("https://antonio-constant-intranet-field.trycloudflare.com/static/4067652146.webp");
+  const label0 = useImage("https://returns-libraries-frequencies-val.trycloudflare.com/static/3169106085.webp");
+  const label1 = useImage("https://returns-libraries-frequencies-val.trycloudflare.com/static/3834523372.webp");
+  const label2 = useImage("https://returns-libraries-frequencies-val.trycloudflare.com/static/3838130273.webp");
+  const label3 = useImage("https://returns-libraries-frequencies-val.trycloudflare.com/static/3936234647.webp");
+  const label4 = useImage("https://returns-libraries-frequencies-val.trycloudflare.com/static/4067652146.webp");
   const icon0 = useImage("https://i.imgur.com/5U0lJAC.png");
   const icon1 = useImage("https://i.imgur.com/Wy79JUg.png");
   const icon2 = useImage("https://i.imgur.com/G64woUg.png");

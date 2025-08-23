@@ -73,15 +73,16 @@ export const Home = () => {
         HomeEmptyPantryMessageIcon,
         HomeEmptyPantryMessageButton,
         HomeEmptyPantryMessageButtonLabel,
-    } = useComponentStyles('Home');
+    } = useComponentStyles('Home', isFocused);
 
     const { goToRecipeDetails, navigation } = useScreenRoutes();
-    const { recipes, loading } = useRecipes('https://antonio-constant-intranet-field.trycloudflare.com/recipes');
+    const { recipes, loading } = useRecipes('https://returns-libraries-frequencies-val.trycloudflare.com/recipes');
 
     const [horizontalisScrolling, setIsHorizontalScrolling] = useState(false);
     useEffect(() => {
         // navigation.preload('RecipesDetails') 
     }, [])
+
     return <SafeAreaView>
         <ScrollView scrollEnabled={!horizontalisScrolling}>
             <View style={{ ...HomeComponent }}>

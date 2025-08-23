@@ -347,7 +347,7 @@ const MorphingShape = () => {
                 height: 21,
                 x: 49.6445 - 21,
                 y: 50.5,
-                href: "https://antonio-constant-intranet-field.trycloudflare.com/static/3440203895.webp"
+                href: "https://returns-libraries-frequencies-val.trycloudflare.com/static/3440203895.webp"
             }}
         />,
         <SvgLabel
@@ -361,7 +361,7 @@ const MorphingShape = () => {
                 height: 21,
                 x: 120.645 - 27,
                 y: 50.5,
-                href: "https://antonio-constant-intranet-field.trycloudflare.com/static/1220566622.webp"
+                href: "https://returns-libraries-frequencies-val.trycloudflare.com/static/1220566622.webp"
             }}
         />,
         <SvgLabel
@@ -375,7 +375,7 @@ const MorphingShape = () => {
                 height: 21,
                 x: 191.645 - 27,
                 y: 50.5,
-                href: "https://antonio-constant-intranet-field.trycloudflare.com/static/559412626.webp"
+                href: "https://returns-libraries-frequencies-val.trycloudflare.com/static/559412626.webp"
             }}
         />,
         <SvgLabel
@@ -389,7 +389,7 @@ const MorphingShape = () => {
                 height: 21,
                 x: 262.934 - 24,
                 y: 50.5,
-                href: "https://antonio-constant-intranet-field.trycloudflare.com/static/3384229049.webp"
+                href: "https://returns-libraries-frequencies-val.trycloudflare.com/static/3384229049.webp"
             }}
         />,
         <SvgLabel
@@ -403,7 +403,7 @@ const MorphingShape = () => {
                 height: 21,
                 x: 333.934 - 22,
                 y: 50.5,
-                href: "https://antonio-constant-intranet-field.trycloudflare.com/static/2706480923.webp"
+                href: "https://returns-libraries-frequencies-val.trycloudflare.com/static/2706480923.webp"
             }}
         />,
     ], [currentButton, animatedProps2]);
