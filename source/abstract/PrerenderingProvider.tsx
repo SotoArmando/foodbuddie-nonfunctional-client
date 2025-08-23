@@ -63,7 +63,7 @@ const TextImageAsBody = (props: TextImage) => {
       'rgba(0,255,0,0.00001)',
     ],
     gradientColorsB: props.gradientColorsB || [
-      'rgba(255,255,0,0.01)',
+      'rgba(255,255,0,0.0001)',
       'rgba(255,255,255,0)',
       'rgba(0,0,255,0.01)',
     ],
