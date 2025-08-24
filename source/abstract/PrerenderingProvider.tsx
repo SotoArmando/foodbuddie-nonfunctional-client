@@ -58,14 +58,14 @@ const TextImageAsBody = (props: TextImage) => {
     // ],
 
     gradientColors: props.gradientColors || [
-      'rgba(255,0,0,0.00001)',
+      'rgba(255,0,0,0.01)',
       'rgba(255,255,255,0)',
-      'rgba(0,255,0,0.00001)',
+      'rgba(0,255,0,0.01)',
     ],
     gradientColorsB: props.gradientColorsB || [
-      'rgba(255,255,0,0.0001)',
+      'rgba(255,255,100,0.01)',
       'rgba(255,255,255,0)',
-      'rgba(0,0,255,0.01)',
+      'rgba(100,100,255,0.01)',
     ],
     lines: (props.style?.lines && Object.values(props.style?.lines)) || props.lines || [
       'Bienvenido, Armando!',
