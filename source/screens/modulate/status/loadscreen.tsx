@@ -52,7 +52,7 @@ export const LoadScreen = () => {
         LoadingSreenComponentTitleLoadingBar,
     } = useComponentStyles('LoadingScreen');
 
-    const isFocused = useIsFocused();
+    const isFocused = true;
     const { goToPantry } = useScreenRoutes();
 
     return <>

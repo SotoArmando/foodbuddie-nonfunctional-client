@@ -9,7 +9,6 @@ import {
 import {scaleStyles} from '../../providers/abstract/StyleProvider';
 import PrerenderedText from './PrerenderedTextView';
 import { useNavigation } from '@react-navigation/native'
-import { RectButton } from 'react-native-gesture-handler';
 import { CommonRectButton } from '../components/CommonRectButton';
 
 const styles = StyleSheet.create(

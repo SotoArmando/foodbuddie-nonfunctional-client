@@ -45,7 +45,7 @@ export const PlannerAdd = () => {
 
 
     // const { updateSession } = useSession();
-    const isFocused = useIsFocused();
+    const isFocused = true;
     const { goToPlanning, goToSearchScreen } = useScreenRoutes();
     const {
         HomeEmptyPantryMessageButton,
@@ -67,6 +67,7 @@ export const PlannerAdd = () => {
                     width={173}
                     height={36}
                     quality={1}
+                    hot={true}
                     viewStyle={{ transform: transform(-1, 1) }}
                     isFocused={isFocused}
                 // viewStyle={{ transform: transform(-2.75, 0.5) }}
@@ -83,6 +84,7 @@ export const PlannerAdd = () => {
                     width={53}
                     height={15}
                     quality={1}
+                    // hot={true}
                     isFocused={isFocused}
                 // viewStyle={{ transform: transform(-2.75, 0.5) }}
                 />
@@ -91,9 +93,10 @@ export const PlannerAdd = () => {
 
             <PrerenderedText style={PlannerSelectLabel}
                 anchor="start"
-                lines={['Select recipes 1']}
+                lines={['Select recipes']}
                 width={115}
                 height={24}
+                hot={true}
                 viewStyle={{ transform: transform(-0.5, -0.5) }}
                 isFocused={isFocused}
             />

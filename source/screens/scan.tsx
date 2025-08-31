@@ -119,7 +119,7 @@ export const Scanner = ({ route }) => {
     // console.log("route", route)
     const { cameraRef, takePicture } = usePerplexity();
     const { goToLoadScreen, goToPantry } = useScreenRoutes();
-    const isFocused = useIsFocused();
+    const isFocused = true;
     const [manually, setManually] = useState(route?.params?.manually);
     console.log(route)
     const {
@@ -158,7 +158,7 @@ export const Scanner = ({ route }) => {
         <SafeAreaView>
             <View style={{ ...ScannerScreenComponent, backgroundColor: !manually ? ScannerScreenComponent.backgroundColor : "#FDFEF4" }}>
                 <View style={ScannerScreenTitleContainer}>
-                    <PrerenderedText isFocused={isFocused} style={ScannerScreenTitleLabel} />
+                    <PrerenderedText isFocused={isFocused} style={ScannerScreenTitleLabel} hot={true} />
 
                     <CommonRectButton onPress={goToPantry} style={ScannerScreenTitleIcon} hitSlop={20} >
                         <Image source={{ uri: 'https://i.imgur.com/w70PYuP.png' }} style={{ height: ScannerScreenTitleIcon.height, width: ScannerScreenTitleIcon.width }} />

@@ -1,8 +1,9 @@
 import { Image, ImageBackground, StatusBar, StyleSheet, View } from "react-native";
 import { scaleStyles } from "../abstract/StyleProvider";
-import { AppLayout } from "./app_layout";
+import AppLayout from "./app_layout";
 import MorphingShape from "../screens/modulate/bottomnavbar/morphtest";
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+
+
 
 export const screensLayoutStyles = StyleSheet.create(
     scaleStyles({
@@ -128,12 +129,12 @@ export const screensLayoutStyles = StyleSheet.create(
             width: '100%',
             height: '100%',
             // backgroundColor: "white",
-            opacity: 0.01, // Adjust opacity for subtle effectnavigation
+            opacity: 0.001, // Adjust opacity for subtle effectnavigation
         },
         filterImageB: {
             width: '100%',
             height: '100%',
-            // backgroundColor: "white",
+            // backgroundColor: "white",import { createAppContainer } from 'react-navigation';
             opacity: 1, // Adjust opacity for subtle effect
         },
     }),

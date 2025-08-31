@@ -7,7 +7,7 @@ import { scale } from "../abstract/StyleProvider";
 import { useIsFocused } from "@react-navigation/native";
 
 export const Recipes = () => {
-    const isFocused = useIsFocused();
+    const isFocused = true;
 
     // if (!isFocused) return null;
     const {
@@ -29,8 +29,7 @@ export const Recipes = () => {
         PantrySearchInput,
     } = useComponentStyles('Pantry');
 
-    return <SafeAreaView>
-        <ScrollView showsVerticalScrollIndicator={false}>
+    return <ScrollView showsVerticalScrollIndicator={false}>
             <View style={PantryComponent}>
                 <View style={PantryTitleRow} >
                     <PrerenderedText
@@ -38,6 +37,7 @@ export const Recipes = () => {
                         anchor="start"
                         lines={['Recipes']}
                         width={123}
+                        hot={true}
                         height={36}
                         quality={1}
                         viewStyle={{ transform: transform(-0.1, 0.5) }}
@@ -126,11 +126,11 @@ export const Recipes = () => {
                 <RecipeElement isFocused={isFocused} picture="https://fitpiq.com/wp-content/uploads/2022/11/Cheera_Thoran.jpg" title="Sheera" description="You have all ingredients" time="15Min" />
             </View>
         </ScrollView>
-    </SafeAreaView>
+    
 
 }
 
-const RecipeElement = ({ title = 'Sabudana Khichdi', picture = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Upwas_Special_Sabudana_Khichadi.jpg/500px-Upwas_Special_Sabudana_Khichadi.jpg', description = 'You have 5 ingredients', time = '6Hrs 15Min', isFavorite = false, isFocused = true }) => {
+const RecipeElement = ({ title = 'Sabudana Khichdi', picture = 'https://www.sharmispassions.com/wp-content/uploads/2022/02/sabudana-khichdi4-500x500.jpg', description = 'You have 5 ingredients', time = '6Hrs 15Min', isFavorite = false, isFocused = true }) => {
     const {
         RecipesItemContainer,
         RecipesItemTitleRow,

@@ -449,6 +449,7 @@ export const defaultStyles: ComponentStyles = {
       backgroundColor: '#FDFEF4',
       paddingTop: 186,
       paddingHorizontal: 23,
+      
     },
     OnboardingComponentSibling: {
       display: 'flex',

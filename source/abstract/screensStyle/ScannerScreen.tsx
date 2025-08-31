@@ -1,7 +1,7 @@
 import { StyleSheet, TextStyle, ViewStyle, ImageStyle, PixelRatio } from 'react-native';
 
 
-export type PrerenderedTextStyle = TextStyle & { anchor?: String, lines?: any | string, width?: number, height?: number };
+export type PrerenderedTextStyle = TextStyle & { anchor?: String, lines?: any | string, width?: number, height?: number, routeName?: string };
 
 export type ScannerScreen = {
     ScannerScreenComponent: ViewStyle,

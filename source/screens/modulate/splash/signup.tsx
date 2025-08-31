@@ -32,7 +32,7 @@ export const SignUp = () => {
         SignUpComplementRowSibling
     } = useComponentStyles('SignUp')
 
-    const isFocused = useIsFocused();
+    const isFocused = true;
     
     // if (!isFocused) return null;
 

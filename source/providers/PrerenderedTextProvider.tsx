@@ -1,10 +1,14 @@
 import React, { createContext, useContext, useRef, ReactNode, useMemo } from 'react';
-import { TextImageAsBody, TextStyle, ViewStyle } from '../abstract/PrerenderingProvider';
+import { getIdFromBody, TextImageAsBody, TextStyle, ViewStyle } from '../abstract/PrerenderedTextProvider';
 import { PrerenderedTextStyle } from '../abstract/screensStyle/ScannerScreen';
-
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useRoute } from '@react-navigation/core';
+import FastImage from '@d11/react-native-fast-image';
+import RNFetchBlob from "rn-fetch-blob";
+const fs = RNFetchBlob.fs;
 
 interface CacheContextType {
-  getPrerenderedUrl: (props: TextImage) => Promise<string>;
+  getPrerenderedUrl: (props: TextImage, routeName: string) => Promise<string>;
 }
 
 
@@ -31,7 +35,16 @@ export const PrerenderCacheProvider: React.FC<{ children: ReactNode }> = ({ chil
   const urlCache = useRef<Map<string, string>>(new Map());
   const promiseCache = useRef<Map<string, Promise<string>>>(new Map());
 
-  const getPrerenderedUrl = async (props: TextImage): Promise<string> => {
+  const fetchTasks: any[] = [];
+
+  function cancelAllFetches() {
+    fetchTasks.forEach(task => {
+      task.cancel();
+    });
+    // Optionally clear the tasks array
+    fetchTasks.length = 0;
+  }
+  const getPrerenderedUrl = async (props: TextImage, routeName: string): Promise<string> => {
     // console.log(props);
     const cacheKey = [JSON.stringify(props.lines), JSON.stringify(props.style?.lines), props.style?.fontSize, props.style?.width, props.style?.color].join(',');
     // console.log(cacheKey);
@@ -44,24 +57,48 @@ export const PrerenderCacheProvider: React.FC<{ children: ReactNode }> = ({ chil
     // }
 
     try {
-      const newLocal = TextImageAsBody({ ...props, anchor: props.anchor || 'start' });
-      // console.log(newLocal);
-      const promise = fetch(
-        'https://returns-libraries-frequencies-val.trycloudflare.com/generate-svg',
+      const body = TextImageAsBody({ ...props, anchor: props.anchor || 'start' });
+      const config = RNFetchBlob.config({
+        session: routeName,
+        fileCache: true
+      });
+      const response = config.fetch("GET", `https://bool-failing-calculator-orchestra.trycloudflare.com/images/${routeName}/${getIdFromBody(body)}.webp`,);
+
+
+      // the image is now dowloaded to device's storage
+      const base64 = await response.then(resp => {
+        // the image path you can use it directly with Image component
+        // let imagePath = resp.path();
+        // console.log(imagePath)
+        // fs.unlink(imagePath);
+        return resp.base64();
+      });
+
+      if (base64) {
+        console.log(props.lines || props.style?.lines,'base64',base64)
+        const newLocal = `data:image/wepb;base64,${base64}`;
+        // console.log(base64)
+        urlCache.current.set(cacheKey, newLocal);
+        return newLocal;
+      }
+
+      console.log('am asking')
+      const promise = config.fetch(
+        "POST",
+        'https://bool-failing-calculator-orchestra.trycloudflare.com/generate-svg',
         {
-          method: 'POST',
-          headers: {
+          headers: JSON.stringify({
             'Content-Type': 'application/json',
-          },
-          body: newLocal,
+          }),
+          body: JSON.stringify({ ...body, routeName: routeName }),
         }
       ).then(async (response) => {
-        const data = await response.json();
-        const fullUrl = 'https://returns-libraries-frequencies-val.trycloudflare.com' + data.imageUrl;
-        // console.log(data);
-        setTimeout(() => {
-          urlCache.current.set(cacheKey, fullUrl);
-        }, 0)
+        // const data = await response.json();
+        const fullUrl = 'https://bool-failing-calculator-orchestra.trycloudflare.com' + data.imageUrl;
+        console.log(fullUrl);
+        // setTimeout(() => {
+        //   urlCache.current.set(cacheKey, fullUrl);
+        // }, 0)
         return fullUrl;
       });
 
@@ -70,12 +107,14 @@ export const PrerenderCacheProvider: React.FC<{ children: ReactNode }> = ({ chil
       const result = await promise;
       // promiseCache.current.delete(cacheKey);
       return result;
+
+
     } catch (error) {
       console.error('Error fetching image:', error);
       return 'error';
     }
   };
-  const memo = useMemo(() => ({getPrerenderedUrl}), [])
+  const memo = useMemo(() => ({ getPrerenderedUrl }), [])
   return (
     <PrerenderCacheContext.Provider value={memo}>
       {children}

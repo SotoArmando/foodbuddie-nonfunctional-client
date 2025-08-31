@@ -5,7 +5,6 @@ import { View, Pressable, Image } from 'react-native';
 import { useComponentStyles } from '../providers/StyleProvider';
 import PrerenderedText from './PrerenderedTextView';
 import { transform } from '../helpers/styleStringHelper';
-import { RectButton } from 'react-native-gesture-handler';
 import { CommonRectButton } from '../components/CommonRectButton';
 
 const useCircularTimePicker = () => {

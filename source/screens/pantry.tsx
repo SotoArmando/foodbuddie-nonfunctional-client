@@ -8,7 +8,7 @@ import { useScreenRoutes } from "../providers/NavigationProvider";
 import { useIsFocused } from "@react-navigation/native";
 import { RectButton } from "react-native-gesture-handler";
 import { act, useEffect, useState } from "react";
-import Animated, { runOnJS, useSharedValue, withSpring } from "react-native-reanimated";
+import Animated, { cancelAnimation, runOnJS, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 import { useDaySelection } from "../providers/DaySelectorProvider";
 import { CommonRectButton } from "../components/CommonRectButton";
 
@@ -123,7 +123,7 @@ const PantrySection = ({ first = false, name = 'Vegetables', ingredients = [], i
 
                 {/* <Image resizeMode={newLocal} source={{uri: 'https://i.imgur.com/L5l0Mxj.png'}} style={{position: 'absolute', left: 0, top: 0, width: '100%', height: 48, opacity: 0.5,}} /> */}
             </CommonRectButton>
-            <View pointerEvents="none" style={{ transform: transform(-7, 2.25), position: 'absolute', right:0, left: 0,top: 0, bottom: 0, height: '100%', width: '100%' }}>
+            <View pointerEvents="none" style={{ transform: transform(-7, 2.25), position: 'absolute', right: 0, left: 0, top: 0, bottom: 0, height: '100%', width: '100%' }}>
                 <Image source={{ uri: 'https://i.imgur.com/PzomCTL.png' }} style={{ ...PantrySectionIconChevron, transform: [{ rotate: collapsed ? '0deg' : '180deg' }], transformOrigin: 'center center' }} />
             </View>
         </View>
@@ -151,7 +151,10 @@ const PantrySection = ({ first = false, name = 'Vegetables', ingredients = [], i
 }
 export const SwitchLabel = ({ active, activeStyle, icon = <></>, viewStyle = null, style, anchor = 'start', width = 42, height = 21, lines = ['All(25)'], isFocused = true }) => {
     const o = useSharedValue(1);
-    const [isActive, setIsActive] = useState(false);
+    const [isActive, setIsActive] = useState(active);
+    const animatedStyles = useAnimatedStyle(() => ({
+        opacity: o.value,
+    }));
 
     useEffect(() => {
         if (active !== isActive) {
@@ -161,64 +164,72 @@ export const SwitchLabel = ({ active, activeStyle, icon = <></>, viewStyle = nul
             o.set(withSpring(0, {
                 // velocity: 0.02,
                 stiffness: 15, // Adjust stiffness for the spring
-                damping: 3, // Adjust damping for the spring
-                mass: 1 / 200, // Adjust mass for the spring
-                restDisplacementThreshold: 0.001, // When to stop the animation
-                restSpeedThreshold: 0.001, // Speed threshold to stop the animation
+                damping: 5, // Adjust damping for the spring
+                mass: 1 / 100, // Adjust mass for the spring
+                overshootClamping: true,
             }, (finished) => {
                 if (finished) {
                     o.set(withSpring(1, {
                         // velocity: 0.02,
                         stiffness: 15, // Adjust stiffness for the spring
-                        damping: 3, // Adjust damping for the spring
+                        damping: 5, // Adjust damping for the spring
                         mass: 1 / 200, // Adjust mass for the spring
-                        restDisplacementThreshold: 0.001, // When to stop the animation
-                        restSpeedThreshold: 0.001, // Speed threshold to stop the animation
+                        overshootClamping: true,
+
                     }));
                 }
             }));
         }
-    }, [active, isFocused]);
+    }, [active]);
 
-    return <Animated.View style={{ opacity: o, display: 'flex', flexDirection: 'row' }}>
-        {isActive ? icon : <></>}
+    return <Animated.View style={[{ display: 'flex', flexDirection: 'row' }, animatedStyles]}>
+        <>
+            {isActive ? icon : <></>}
+        </>
         <PrerenderedText style={style}
             lines={lines}
             width={width}
+            
             height={height}
             viewStyle={viewStyle || { transform: transform(-1.33, 2.8) }}
             isFocused={isFocused}
             anchor={anchor || "start"}
             preloadColor={[activeStyle]}
-            pStyles={isActive ? 0 : undefined}
+            pStyles={isActive ? 0 : -1}
         />
     </Animated.View>
 }
-export const AnimatedPantryBottomBorder = ({ active = false, left = scale(12.5), right = scale(12.5) }: {
+export const AnimatedPantryBottomBorder = ({ active, left = scale(12.5), right = scale(12.5) }: {
     left?: number,
     right?: number,
     active: boolean
 }) => {
-    const o = useSharedValue(1);
+    const o = useSharedValue(active ? 1 : 0);
+    const animatedStyles = useAnimatedStyle(() => ({
+        opacity: o.value,
+    }));
     const {
         PantryCategoryLabelContainerBottomBar,
     } = useComponentStyles('Pantry');
+    // const [_active, setActive] = useState(active ? 1 : 0);
+
+
 
     useEffect(() => {
-        if (active === true) {
-            o.value = withSpring(1);
-        } else {
+        if (active === false) {
             o.value = withSpring(0);
+        } else {
+            o.value = withSpring(1);
         }
     }, [active]);
 
     return <Animated.View style={[PantryCategoryLabelContainerBottomBar,
-        { opacity: o, left, right }]} />;
+        { left, right }, animatedStyles]} />;
 }
 export const Pantry = ({ }) => {
 
     const [selected, setSelected] = useState(0);
-    const isFocused = useIsFocused();
+    const isFocused = true;
 
     const {
         PantryComponent,
@@ -253,7 +264,7 @@ export const Pantry = ({ }) => {
     } = useComponentStyles('Home');
 
 
-    return <SafeAreaView>
+    return <>
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={PantryComponent}>
                 <View style={PantryTitleRow} >
@@ -266,6 +277,7 @@ export const Pantry = ({ }) => {
                         quality={1}
                         viewStyle={{ transform: transform(-0.1, 0.5) }}
                         isFocused={isFocused}
+                        hot={true}
                     />
                     <Image source={{ uri: 'https://i.imgur.com/RrRU1Bp.png' }} style={{ ...PantryTitleICon, transform: transform(0, 6) }} />
                     {/* <Image resizeMode="contain" source={{uri: 'https://i.imgur.com/ngAAGEy.png'}} style={{position: 'absolute',opacity: 0.5, left: 0, top: 0, width: '100%', maxWidth: '100%', height: '100%'}} /> */}
@@ -300,27 +312,27 @@ export const Pantry = ({ }) => {
                         <View style={PantryCategoryLabelContainer} >
                             <SwitchLabel isFocused={isFocused} width={48} height={21} lines={['All(25)']} active={selected === 0} style={{ ...PantryCategoryLabelInactive }} activeStyle={PantryCategoryLabel} />
 
-                            <AnimatedPantryBottomBorder active={selected === 0} />
+                            <AnimatedPantryBottomBorder key={'A0' + (selected === 0).toString()} active={selected === 0} />
                         </View>
                     </CommonRectButton>
                     <CommonRectButton onPress={() => setSelected(1)}  >
                         <View style={{ ...PantryCategoryLabelContainer, borderBottomColor: 'transparent' }} >
                             <SwitchLabel isFocused={isFocused} width={86} height={21} lines={['Leftovers(4)']} active={selected === 1} style={{ ...PantryCategoryLabelInactive }} activeStyle={PantryCategoryLabel} />
 
-                            <AnimatedPantryBottomBorder active={selected === 1} />
+                            <AnimatedPantryBottomBorder key={'A1' + (selected === 1).toString()} active={selected === 1} />
                         </View>
                     </CommonRectButton>
                     <CommonRectButton onPress={() => setSelected(2)}  >
                         <View style={{ ...PantryCategoryLabelContainer, borderBottomColor: 'transparent' }} >
-                            <SwitchLabel isFocused={isFocused} width={71} height={21} lines={['Expired(2)']} active={selected === 2} style={{ ...PantryCategoryLabelInactive }} activeStyle={PantryCategoryLabel} />
-                            <AnimatedPantryBottomBorder active={selected === 2} />
+                            <SwitchLabel isFocused={isFocused} width={73} height={21} lines={['Expired(2)']} active={selected === 2} style={{ ...PantryCategoryLabelInactive }} activeStyle={PantryCategoryLabel} />
+                            <AnimatedPantryBottomBorder key={'A2' + (selected === 2).toString()} active={selected === 2} />
                         </View>
                     </CommonRectButton>
 
                     <CommonRectButton onPress={() => setSelected(3)} style={{ marginRight: scale(32) }} >
                         <View style={{ ...PantryCategoryLabelContainer, borderBottomColor: 'transparent' }} >
                             <SwitchLabel isFocused={isFocused} width={75} height={21} lines={['Expiring(7)']} active={selected === 3} style={{ ...PantryCategoryLabelInactive }} activeStyle={PantryCategoryLabel} />
-                            <AnimatedPantryBottomBorder active={selected === 3} />
+                            <AnimatedPantryBottomBorder key={'A3' + (selected === 3).toString()} active={selected === 3} />
                         </View>
                     </CommonRectButton>
                     {/* <Image resizeMode="contain" source={{uri: 'https://i.imgur.com/JdkKKYn.png'}} style={{position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', opacity: 0.5}} /> */}
@@ -367,7 +379,7 @@ export const Pantry = ({ }) => {
                 <Image style={PantryAbsoluteButtonIcon} source={{ uri: 'https://i.imgur.com/GZbCIgW.png' }} />
             </View>
         </View>
-    </SafeAreaView>
+    </>
 
 }
 
@@ -404,6 +416,7 @@ function PantrySectionItem({
                 <PrerenderedText
                     style={PantrySectionItemExpireLabel}
                     anchor="middle"
+                    hot={true}
                     lines={[expiringDate]}
                     width={101}
                     height={15}
@@ -421,6 +434,7 @@ function PantrySectionItem({
                     <PrerenderedText
                         style={PantrySectionItemTitleLabel}
                         anchor="start"
+                        hot={true}
                         lines={[title]}
                         width={181}
                         height={21}
@@ -432,6 +446,7 @@ function PantrySectionItem({
                         <PrerenderedText
                             style={PantrySectionItemTitleKgLabel}
                             anchor="start"
+                            hot={true}
                             lines={[amount]}
                             width={100}
                             height={21}
@@ -449,6 +464,7 @@ function PantrySectionItem({
                     style={PantrySectionItemTitleProgressContainerLabel}
                     anchor="middle"
                     lines={[percent]}
+                    hot={true}
                     width={41.06}
                     height={18}
                     quality={1}
@@ -458,6 +474,7 @@ function PantrySectionItem({
                 <PrerenderedText
                     style={PantrySectionItemTitleProgressContainerUsedLabel}
                     anchor="middle"
+                    hot={true}
                     lines={['Used']}
                     width={41.06}
                     height={18}

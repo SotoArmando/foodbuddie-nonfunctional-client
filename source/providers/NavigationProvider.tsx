@@ -1,8 +1,12 @@
 import React, { createContext, useContext, useState, ReactNode, useCallback, useMemo } from 'react';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
 import debounce from 'lodash.debounce';
-import {  InteractionManager } from 'react-native';
+import { InteractionManager } from 'react-native';
 import { useSession } from './SessionProvider';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { SkiaTutorial } from '../screens/modulate/bottomnavbar/morphtestskia';
+import { usePrerenderCache } from './PrerenderedTextProvider';
+import RNFetchBlob from 'rn-fetch-blob';
 
 
 
@@ -10,7 +14,7 @@ import { useSession } from './SessionProvider';
 type RootStackParamList = any;
 
 interface NavigationContextType {
-  navigation: NavigationProp<RootStackParamList>,
+  navigation: StackNavigationProp<RootStackParamList>,
   goToPlanning: () => void;
   goToAllSet: () => void;
   goToOnboard: () => void;
@@ -30,47 +34,60 @@ interface NavigationContextType {
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
 
-export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+export const NavigationProvider: React.FC<{ children: ReactNode, navigation: StackNavigationProp<{ route: {} }> }> = ({ children, navigation }) => {
+  // const navigation = useNavigation<StackNavigationProp<{route: {}}>>();
   const [nextScreen, setNextScreen] = useState<string | null>(null);
-  const [currentScreen, setcurrentScreen] = useState<string | null>(null);
+  const [currentScreen, setcurrentScreen] = useState<string>('Home');
   const { hasSession, updateSession } = useSession();
   // const [screens, setScreens] = useState<string[]>([]);
 
   // Helper to create debounced navigation functions that also set nextScreen
   const createNavFunction = useCallback(
     (screenName: string) =>
-       debounce(async (params?: any) => {
-        setcurrentScreen(screenName);
+      debounce(async (params?: any) => {
+
         // setScreens(screens.includes(screenName) ? screens : [...screens,screenName]);
+        setTimeout(() => {
+          
+          RNFetchBlob.session(currentScreen).dispose();
+          setcurrentScreen(screenName);
+          setTimeout(() => {
+            navigation.replace(screenName, params || { routeName: screenName });
+          })
 
-        const hiddenNavScreens = ['LoadScreen', 'PlannerAdd', 'Scanner', 'Splash', 'Onboard', 'SignUp', 'AllSet', 'Preferences'];
-        const resetRoutes = ['Home', 'RecipesDetails', 'Pantry', 'Planning', 'Preferences']
+          setTimeout(() => {
+            const hiddenNavScreens = ['LoadScreen', 'PlannerAdd', 'Scanner', 'Splash', 'Onboard', 'SignUp', 'AllSet', 'Preferences'];
+            const resetRoutes = ['Home', 'RecipesDetails', 'Pantry', 'Planning', 'Preferences']
 
-        if (resetRoutes.includes(screenName)) {
+            if (resetRoutes.includes(screenName)) {
 
-          // navigation.dispatch((state) => {
-          //   // Remove all the screens after `Profile`
-          //   const index = state.routes.findIndex((r) => r.name === screenName);
-          //   const routes = state.routes.slice(0, index + 1);
+              // navigation.dispatch((state) => {
+              //   // Remove all the screens after `Profile`
+              //   const index = state.routes.findIndex((r) => r.name === screenName);
+              //   const routes = state.routes.slice(0, index + 1);
 
-          //   return CommonActions.reset({
-          //     ...state,
-          //     index: index, // index should point to the last route
-          //     routes: state.routes, // keep only the last two routes
-          //   });
-          // });
-        }
-        if (hiddenNavScreens.includes(screenName)) {
-          updateSession(false);
-        } else {
-          updateSession(true);
-        }
+              //   return CommonActions.reset({
+              //     ...state,
+              //     index: index, // index should point to the last route
+              //     routes: state.routes, // keep only the last two routes
+              //   });
+              // });
+            }
+            if (hiddenNavScreens.includes(screenName)) {
+              updateSession(false);
+            } else {
+              updateSession(true);
+            }
 
-        InteractionManager.runAfterInteractions(() => {
-          navigation.navigate(screenName, params || {});
+          })
         })
+
+        
+
+
       }),
+
+
     []
   );
 
@@ -115,7 +132,7 @@ export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children
       value={memo}
     >
       {children}
-
+      <SkiaTutorial />
     </NavigationContext.Provider>
   );
 };

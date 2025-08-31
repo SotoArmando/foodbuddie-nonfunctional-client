@@ -1,13 +1,13 @@
 import { StyleProvider, useComponentStyles } from "../providers/StyleProvider"
 import PrerenderedText from "../abstract/PrerenderedTextView";
-import { Dimensions, Image, ImageBackground, Pressable, ScrollView, TextStyle, View, ViewStyle } from "react-native";
+import { Dimensions, Image, ImageBackground, InteractionManager, Pressable, ScrollView, TextStyle, View, ViewStyle } from "react-native";
 import { scale } from "../abstract/StyleProvider";
 import { transform } from "../helpers/styleStringHelper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useScreenRoutes } from "../providers/NavigationProvider";
 import { useSession } from "../providers/SessionProvider";
 import { RectButton } from "react-native-gesture-handler";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import Animated, { cancelAnimation, interpolateColor, runOnJS, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { DaySelectionProvider, useDaySelection } from "../providers/DaySelectorProvider";
@@ -28,20 +28,23 @@ const useDayListContainer = (props) => {
     const updateDay2 = useCallback(async (newDay: number) => {
         if (newDay !== day) {
             cancelAnimation(progress);
-            progress.value = 0;
-            // progress.value = withSpring(0, {
-            //     stiffness: 15, // Adjust stiffness for the spring
-            //     damping: 3, // Adjust damping for the spring
-            //     mass: 1 / 400, // Adjust mass for the spring
-            //     restDisplacementThreshold: 0.001, // When to stop the animation
-            //     restSpeedThreshold: 0.001, // Speed threshold to stop the animation
-            // }, (f) => {
-            //     if (f) {
-            //         runOnJS(updateDay)(newDay)
-            //     }
-            // });
+            // progress.value = 0;
+            progress.value = withSpring(0, {
+                //  delay:10,
+                // velocity: 0.02,
+                stiffness: 13, // Adjust stiffness for the spring
+                damping: 13, // Adjust damping for the spring
+                mass: 0.001, // Adjust mass for the spring
+                // restDisplacementThreshold: 0.1, // When to stop the animation
+                // restSpeedThreshold: 0.1, // Speed threshold to stop the animation
+                overshootClamping: true,
+            }, (f) => {
+                if (f) {
+                    runOnJS(updateDay)(newDay)
+                }
+            });
 
-            updateDay(newDay)
+            // updateDay(newDay)
         }
 
     }, [day]);
@@ -80,7 +83,16 @@ const useDayListContainer = (props) => {
 
     useEffect(() => {
         setTimeout(() => {
-            progress.value = withSpring(1);
+            progress.value = withSpring(1, {
+                //  delay:10,
+                // velocity: 0.02,
+                stiffness: 13, // Adjust stiffness for the spring
+                damping: 13, // Adjust damping for the spring
+                mass: 0.03, // Adjust mass for the spring
+                // restDisplacementThreshold: 0.1, // When to stop the animation
+                // restSpeedThreshold: 0.1, // Speed threshold to stop the animation
+                overshootClamping: true,
+            });
         }, 0)
     }, [day])
 
@@ -100,7 +112,7 @@ const DayListContainer = (props = { isFocused: true }) => {
     // console.log(newLocal_3)
     return <>
         <View style={{ marginBottom: -16, }}>
-            {isFocused && <Animated.FlatList
+            {<Animated.FlatList
 
                 // keyExtractor={newLocal_2}
                 // windowSize={1}
@@ -143,13 +155,21 @@ const PlannerMealRowComponent = ({ isFocused }) => {
     } = useComponentStyles('Planner');
 
     const [selected, setSelected] = useState(0);
-    return <View style={PlannerMealRow}>
-        <CommonRectButton onPress={() => setSelected(0)} style={PlannerMealRowElement}>
+    const [render, setRender] = useState(false);
+    useEffect(() => {
+        InteractionManager.runAfterInteractions(() => {
+            setRender(true);
+        });
+    }, [])
+    const handleClick = useCallback((v: number) => setSelected(v), [selected]);
+    const handleS = useCallback((v: number) => selected === v, [selected]);
+    return render && <View style={PlannerMealRow}>
+        <CommonRectButton onPress={() => handleClick(0)} style={PlannerMealRowElement}>
             <View style={{ ...PlannerMealRowElementLabelContainer, transform: transform(0, 0.75) }}>
                 {/* {selected === 0 && } */}
                 <SwitchLabel
                     icon={<Image source={{ uri: 'https://i.imgur.com/q6Azn1N.png' }} style={PlannerMealRowElementIcon}></Image>}
-                    active={selected === 0}
+                    active={handleS(0)}
                     style={{ ...PlannerMealRowElementLabelInactive }}
                     activeStyle={{ ...PlannerMealRowElementLabel, color: "#02733E" }}
                     anchor="middle"
@@ -162,12 +182,12 @@ const PlannerMealRowComponent = ({ isFocused }) => {
                 />
 
             </View>
-            <AnimatedPantryBottomBorder active={selected === 0} left={scale(16)} right={16} />
+            <AnimatedPantryBottomBorder active={handleS(0)} left={scale(16)} right={16} />
         </CommonRectButton>
-        <CommonRectButton onPress={() => setSelected(1)} style={{ ...PlannerMealRowElement, borderBottomColor: 'transparent', }}>
+        <CommonRectButton onPress={() => handleClick(1)} style={{ ...PlannerMealRowElement, borderBottomColor: 'transparent', }}>
             <SwitchLabel
                 icon={<Image source={{ uri: 'https://i.imgur.com/sgihhdN.png' }} style={PlannerMealRowElementIcon} />}
-                active={selected === 1}
+                active={handleS(1)}
                 style={{ ...PlannerMealRowElementLabelInactive }}
                 activeStyle={{ ...PlannerMealRowElementLabel, color: "#02733E" }}
                 anchor="middle"
@@ -177,12 +197,12 @@ const PlannerMealRowComponent = ({ isFocused }) => {
                 viewStyle={{ transform: transform(-0.5, 2.3) }}
                 isFocused={isFocused}
             />
-            <AnimatedPantryBottomBorder active={selected === 1} left={scale(16)} right={scale(16)} />
+            <AnimatedPantryBottomBorder active={handleS(1)} left={scale(16)} right={scale(16)} />
         </CommonRectButton>
-        <CommonRectButton onPress={() => setSelected(2)} style={{ ...PlannerMealRowElement, borderBottomColor: 'transparent', }}>
+        <CommonRectButton onPress={() => handleClick(2)} style={{ ...PlannerMealRowElement, borderBottomColor: 'transparent', }}>
             <SwitchLabel
                 icon={<Image source={{ uri: 'https://i.imgur.com/4FII06N.png' }} style={PlannerMealRowElementIcon} />}
-                active={selected === 2}
+                active={handleS(2)}
                 style={{ ...PlannerMealRowElementLabelInactive }}
                 activeStyle={{ ...PlannerMealRowElementLabel, color: "#02733E" }}
                 anchor="middle"
@@ -192,13 +212,31 @@ const PlannerMealRowComponent = ({ isFocused }) => {
                 viewStyle={{ transform: transform(-0.5, 2.3) }}
                 isFocused={isFocused}
             />
-            <AnimatedPantryBottomBorder active={selected === 2} left={scale(16)} right={scale(16)} />
+            <AnimatedPantryBottomBorder active={handleS(2)} left={scale(16)} right={scale(16)} />
         </CommonRectButton>
         {/* <Image source={{ uri: 'https://i.imgur.com//x5oCHuI.png' }} style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', opacity: 0.75 }}></Image> */}
     </View>
 }
 export const Planning = () => {
-    const isFocused = useIsFocused();
+    const isFocused = true;
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        const unsubscribeBlur = navigation.addListener('blur', () => {
+            // console.log('Screen is being navigated out (blurred)');
+            // Handle any cleanup or actions here
+        });
+
+        // const unsubscribeFocus = navigation.addListener('focus', () => {
+        //     console.log('Screen is now focused');
+        //     // Handle actions on entering screen
+        // });
+
+        return () => {
+            unsubscribeBlur();
+            // unsubscribeFocus();
+        };
+    }, [navigation]);
 
     const {
         PlannerComponent,
@@ -240,6 +278,7 @@ export const Planning = () => {
                             lines={['Meal Planner']}
                             width={159}
                             height={36}
+                            hot={true}
                             viewStyle={{ transform: transform(-0.25, 0.5) }}
                             isFocused={isFocused}
                         />
@@ -280,7 +319,7 @@ export const Planning = () => {
             { start: 337, end: 390 }
         ]; */}
 
-                    {isFocused && <DayListContainer isFocused={isFocused} />}
+                    {<DayListContainer isFocused={isFocused} />}
                 </View>
 
 
@@ -469,34 +508,37 @@ function PlannerDaysRowElementW({
     }]} />, [current]);
 
 
-    return <CommonRectButton onPress={newLocal} style={[{ ...active ? PlannerDaysRowElement : PlannerDaysRowElementInactive, marginLeft: scale(extraGapLeft), marginRight: scale(extraGapRight), position: 'relative', overflow: 'visible', width: (screenWidth - (scale(32))) / 6.5 }]}>
+    return <CommonRectButton onPress={newLocal} style={[{ ...active ? PlannerDaysRowElement : PlannerDaysRowElementInactive, marginLeft: scale(extraGapLeft), marginRight: scale(extraGapRight), position: 'relative', overflow: 'visible', borderRadius: scale(16), width: (screenWidth - (scale(32))) / 6.5 }]}>
         {focus}
         <PrerenderedText
             style={{ ...PlannerDaysRowElementTitle }}
             anchor="middle"
             lines={[dayNumber]}
             width={24}
+            switcheable={true}
             height={24}
             viewStyle={{ transform: transform(active ? 1 : 0, 0) }}
             quality={0.75}
             isFocused={isFocused}
             preloadColor={[{ fontWeight: '700', color: '#fff' }]}
-            pStyles={current ? 0 : undefined}
-            timeout={0} 
+            pStyles={current ? 0 : -1}
+            timeout={1000}
+
         />
 
         <PrerenderedText
-            style={{ ...PlannerDaysRowElementDay}}
+            style={{ ...PlannerDaysRowElementDay }}
             anchor="middle"
             lines={[dayLabel]}
+            switcheable={true}
             width={32}
             viewStyle={{ transform: transform(active ? 1.25 : 0, 4.5) }}
             height={14}
             quality={0.75}
             isFocused={isFocused}
             preloadColor={[{ fontWeight: '400', color: '#fff' }]}
-            pStyles={current ? 0 : undefined}
-            timeout={0}
+            pStyles={current ? 0 : -1}
+            timeout={1000}
         />
 
         <View style={{ ...PlannerDaysRowElementDot, backgroundColor: current ? "#FFF" : "#E1DDD4", transform: transform(active ? 1 : 0, 4.5), opacity: current ? 1 : 0 }}></View>

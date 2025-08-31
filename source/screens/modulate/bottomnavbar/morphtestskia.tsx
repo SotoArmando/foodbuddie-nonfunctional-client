@@ -1,7 +1,8 @@
-import { Skia, Canvas, Circle, interpolatePaths, Line, Path, vec, usePathInterpolation, rrect, rect, Group, useImage, Image } from "@shopify/react-native-skia";
+import { Skia, Canvas, Circle, interpolatePaths, Line, Path, vec, usePathInterpolation, rrect, rect, Group, useImage, Image, useCanvasSize } from "@shopify/react-native-skia";
 import React, { useEffect, useState } from "react";
 import { Dimensions, InteractionManager, Pressable, StyleSheet, View, Image as ReactImage } from "react-native";
 import {
+  cancelAnimation,
   runOnJS,
   runOnUI,
   useDerivedValue,
@@ -23,7 +24,7 @@ import { scale } from "../../../abstract/StyleProvider";
 import { CommonRectButton } from "../../../components/CommonRectButton";
 
 
-
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const springConfigB = {
   damping: 800, // How quickly the spring stops moving
   mass: 0.25 / 8, // Weight of the spring
@@ -43,12 +44,14 @@ const springConfigA = {
 };
 
 const springConfigC = {
-  damping: 100, // How quickly the spring stops moving
-  mass: 0.5, // Weight of the spring
-  stiffness: 200, // How bouncy the spring is
-  overshootClamping: true, // Whether to prevent overshooting
-  restDisplacementThreshold: 0.01,
-  restSpeedThreshold: 2,
+  delay: 0,
+  // velocity: 0.02,
+  stiffness: 13, // Adjust stiffness for the spring
+  damping: 13, // Adjust damping for the spring
+  mass: 0.01, // Adjust mass for the spring
+  restDisplacementThreshold: 0.1, // When to stop the animation
+  restSpeedThreshold: 0.1, // Speed threshold to stop the animation
+  overshootClamping: true,
 };
 
 export const SkiaTutorial = () => {
@@ -67,11 +70,11 @@ export const SkiaTutorial = () => {
   const circleOpacity = useDerivedValue(() => progressO.value);
   const circleYPosition = useDerivedValue(() => progressO.value * 20);
   const imageShadow = useImage("https://i.imgur.com/zHwObzo.png");
-  const label0 = useImage("https://returns-libraries-frequencies-val.trycloudflare.com/static/3169106085.webp");
-  const label1 = useImage("https://returns-libraries-frequencies-val.trycloudflare.com/static/3834523372.webp");
-  const label2 = useImage("https://returns-libraries-frequencies-val.trycloudflare.com/static/3838130273.webp");
-  const label3 = useImage("https://returns-libraries-frequencies-val.trycloudflare.com/static/3936234647.webp");
-  const label4 = useImage("https://returns-libraries-frequencies-val.trycloudflare.com/static/4067652146.webp");
+  const label0 = useImage("https://bool-failing-calculator-orchestra.trycloudflare.com/static/3169106085.webp");
+  const label1 = useImage("https://bool-failing-calculator-orchestra.trycloudflare.com/static/3834523372.webp");
+  const label2 = useImage("https://bool-failing-calculator-orchestra.trycloudflare.com/static/3838130273.webp");
+  const label3 = useImage("https://bool-failing-calculator-orchestra.trycloudflare.com/static/3936234647.webp");
+  const label4 = useImage("https://bool-failing-calculator-orchestra.trycloudflare.com/static/4067652146.webp");
   const icon0 = useImage("https://i.imgur.com/5U0lJAC.png");
   const icon1 = useImage("https://i.imgur.com/Wy79JUg.png");
   const icon2 = useImage("https://i.imgur.com/G64woUg.png");
@@ -83,10 +86,11 @@ export const SkiaTutorial = () => {
   const iconB3 = useImage("https://i.imgur.com/iftrVsW.png");
   const iconB4 = useImage("https://i.imgur.com/gyrYLba.png");
 
-  const handleClick = debounce((active: number) => {
-
-    InteractionManager.runAfterInteractions(() => {
+  const handleClick = debounce(async (active: number) => {
+    [goToHome, goToPlanning, goToPantry, goToRecipes, goToProfile][active]()
+    setTimeout(() => {
       if (currentActive !== active) {
+
         progress.value = 0;
         progressO.value = 1;
         progress1.value = -1;
@@ -111,7 +115,12 @@ export const SkiaTutorial = () => {
 
         });
       }
-    });
+    }, 2)
+
+
+
+
+
 
 
 
@@ -119,27 +128,34 @@ export const SkiaTutorial = () => {
   })
 
   useEffect(() => {
+
+
     progress.value = withSpring(0, springConfigC, (finished) => {
-      if (finished) {
-        progress1.value = withSpring(0, springConfigC, (finished) => {
-          if (finished) {
 
-          }
-
-        });
-        progressO.value = withSpring(1, springConfigC, (finished) => {
-          if (finished) {
-
-
-          }
-
-        });
-      }
     });
+
+    setTimeout(() => {
+
+      progress1.value = withSpring(0, springConfigC, (finished) => {
+        if (finished) {
+
+        }
+
+      });
+      progressO.value = withSpring(1, springConfigC, (finished) => {
+        if (finished) {
+
+
+        }
+
+      });
+    }, 50)
   }, [currentActive]);
 
   const pathData = usePathInterpolation(progress, [0, 1], [states[currentActive][1], states[currentActive][0]]);
-  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  // const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+
+  // const {ref, size: {width:cWidth, height: cHeight}} = useCanvasSize();
   // console.log('currentActive', currentActive)
   return (
     <View pointerEvents={'box-none'} style={{ ...styles.container, opacity: hasSession === true ? 1 : 0 }}>
@@ -190,29 +206,29 @@ export const SkiaTutorial = () => {
       /> */}
 
       <Canvas pointerEvents="box-only" style={{ flex: 1, maxWidth: width, width: 393, maxHeight: 136, overflow: 'visible', }}
-        onLayout={(e) => {
-          const { width, height } = e.nativeEvent.layout;
-          setCanvasSize({ width, height });
-        }}
+      // onLayout={(e) => {
+      //   const { width, height } = e.nativeEvent.layout;
+      //   setCanvasSize({ width, height });
+      // }}
       >
 
-        <Group transform={[{ translateY: 50 }, { scale: (canvasSize.width / 393) * 1.03296703297 }]}  >
+        <Group transform={[{ translateY: 50 }, { scale: (screenWidth / 393) * 1 }]}  >
           <Path
             path={pathData}
             color="#FF8D51"
             antiAlias={true}
           />
           <Group opacity={0.25}>
-          <Image image={imageShadow} fit="contain" x={49.6445 - (146 / 2)} opacity={currentActive === 0 ? circleOpacity : 0} y={currentActive === 0 ? progress1d : 0} width={146} height={146} />
-          <Image image={imageShadow} fit="contain" x={120.645 - (146 / 2)} opacity={currentActive === 1 ? circleOpacity : 0} y={currentActive === 1 ? progress1d : 0} width={146} height={146} />
-          <Image image={imageShadow} fit="contain" x={191.645 - (146 / 2)} opacity={currentActive === 2 ? circleOpacity : 0} y={currentActive === 2 ? progress1d : 0} width={146} height={146} />
-          <Image image={imageShadow} fit="contain" x={262.934 - (146 / 2)} opacity={currentActive === 3 ? circleOpacity : 0} y={currentActive === 3 ? progress1d : 0} width={146} height={146} />
-          <Image image={imageShadow} fit="contain" x={333.934 - (146 / 2)} opacity={currentActive === 4 ? circleOpacity : 0} y={currentActive === 4 ? progress1d : 0} width={146} height={146} />
+            <Image image={imageShadow} fit="contain" x={49.6445 - (146 / 2)} opacity={currentActive === 0 ? circleOpacity : 0} y={currentActive === 0 ? progress1d : 0} width={146} height={146} />
+            <Image image={imageShadow} fit="contain" x={120.645 - (146 / 2)} opacity={currentActive === 1 ? circleOpacity : 0} y={currentActive === 1 ? progress1d : 0} width={146} height={146} />
+            <Image image={imageShadow} fit="contain" x={191.645 - (146 / 2)} opacity={currentActive === 2 ? circleOpacity : 0} y={currentActive === 2 ? progress1d : 0} width={146} height={146} />
+            <Image image={imageShadow} fit="contain" x={262.934 - (146 / 2)} opacity={currentActive === 3 ? circleOpacity : 0} y={currentActive === 3 ? progress1d : 0} width={146} height={146} />
+            <Image image={imageShadow} fit="contain" x={333.934 - (146 / 2)} opacity={currentActive === 4 ? circleOpacity : 0} y={currentActive === 4 ? progress1d : 0} width={146} height={146} />
           </Group>
-          <Circle opacity={currentActive === 0 ? circleOpacity : 0} cx={49.6445} cy={currentActive === 0 ? progress1 : 0} r={58 / 2} color="white" antiAlias={true}/>
+          <Circle opacity={currentActive === 0 ? circleOpacity : 0} cx={49.6445} cy={currentActive === 0 ? progress1 : 0} r={58 / 2} color="white" antiAlias={true} />
           <Circle opacity={currentActive === 1 ? circleOpacity : 0} cx={120.645} cy={currentActive === 1 ? progress1 : 0} r={58 / 2} color="white" antiAlias={true} />
-          <Circle opacity={currentActive === 2 ? circleOpacity : 0} cx={191.645} cy={currentActive === 2 ? progress1 : 0} r={58 / 2} color="white" antiAlias={true}/>
-          <Circle opacity={currentActive === 3 ? circleOpacity : 0} cx={262.934} cy={currentActive === 3 ? progress1 : 0} r={58 / 2} color="white"  antiAlias={true}/>
+          <Circle opacity={currentActive === 2 ? circleOpacity : 0} cx={191.645} cy={currentActive === 2 ? progress1 : 0} r={58 / 2} color="white" antiAlias={true} />
+          <Circle opacity={currentActive === 3 ? circleOpacity : 0} cx={262.934} cy={currentActive === 3 ? progress1 : 0} r={58 / 2} color="white" antiAlias={true} />
           <Circle opacity={currentActive === 4 ? circleOpacity : 0} cx={333.934} cy={currentActive === 4 ? progress1 : 0} r={58 / 2} color="white" antiAlias={true} />
           <Image image={label0} fit="contain" opacity={currentActive === 0 ? circleOpacity : 0} y={50.5} x={49.6445 - 21} width={42} height={21} />
           <Image image={label1} fit="contain" opacity={currentActive === 1 ? circleOpacity : 0} y={50.5} x={120.645 - 27} width={54} height={21} />
@@ -234,11 +250,11 @@ export const SkiaTutorial = () => {
       </Canvas>
       {/* goToHome, goToPlanning, goToPantry, goToRecipes, goToProfile  */}
       <View style={buttonsContainer}>
-        <CommonRectButton rippleColor={'transparent'} style={button} onPress={() => { handleClick(0); goToHome(); }}></CommonRectButton>
-        <CommonRectButton rippleColor={'transparent'} style={button} onPress={() => { handleClick(1); goToPlanning(); }}></CommonRectButton>
-        <CommonRectButton rippleColor={'transparent'} style={button} onPress={() => { handleClick(2); goToPantry() }}></CommonRectButton>
-        <CommonRectButton rippleColor={'transparent'} style={button} onPress={() => { handleClick(3); goToRecipes() }}></CommonRectButton>
-        <CommonRectButton rippleColor={'transparent'} style={button} onPress={() => { handleClick(4); goToProfile() }}></CommonRectButton>
+        <CommonRectButton rippleColor={'transparent'} style={button} onPress={() => { handleClick(0); }}></CommonRectButton>
+        <CommonRectButton rippleColor={'transparent'} style={button} onPress={() => { handleClick(1); }}></CommonRectButton>
+        <CommonRectButton rippleColor={'transparent'} style={button} onPress={() => { handleClick(2); }}></CommonRectButton>
+        <CommonRectButton rippleColor={'transparent'} style={button} onPress={() => { handleClick(3); }}></CommonRectButton>
+        <CommonRectButton rippleColor={'transparent'} style={button} onPress={() => { handleClick(4); }}></CommonRectButton>
       </View>
       {/* <PrerenderedText
                 style={{ fontFamily: 'Poppins',fontWeight: '500', fontSize: 14, lineHeight: 21, letterSpacing: 0, color: '#fff' }}

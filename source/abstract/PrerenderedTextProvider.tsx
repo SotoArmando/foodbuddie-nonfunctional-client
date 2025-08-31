@@ -38,22 +38,33 @@ interface TextImage {
 // export const defaultStorage: LabelStorageContext = {
 //   labels: []
 // };
+const getIdFromBody = (body: any) => {
+  const murmurhash = require('murmurhash');
+
+  function hashFilename(filename) {
+    return murmurhash.v3(filename, "some seed value (optional)");
+  }
+
+  const imageId = hashFilename(body.lines[0] + body.fontSize + body.fontSize + body.width + body.fill); // Use provided ID or generate a new one
+  
+  return imageId;
+}
 
 const TextImageAsBody = (props: TextImage) => {
   // console.log(PixelRatio.get())
-  return JSON.stringify({
+  return {
     width1: (props.style?.width || props.width).toString(),
     width: ((props.style?.width || props.width) * (PixelRatio.get() * (PixelRatio.get()))).toString(),
     height1: (props.style?.height || props.height).toString(),
     height: ((props.style?.height || props.height) * (PixelRatio.get() * (PixelRatio.get()))).toString(),
     // gradientColors: props.gradientColors || [
     //   'rgba(255,0,0,0.005)',
-      
+
     //   'rgba(0,255,0,0.005)',
     // ],
     // gradientColorsB: props.gradientColorsB || [
     //   'rgba(255,255,0,0.005)',
-      
+
     //   'rgba(0,0,255,0.005)',
     // ],
 
@@ -76,7 +87,7 @@ const TextImageAsBody = (props: TextImage) => {
       (props.style?.fontSize && (props.style?.fontSize).toString()) || '22',
     fontFamily: props.style?.fontFamily || 'Epilogue',
     fontWeight: props.style?.fontWeight || '700',
-    lineHeight: ((props.style?.lineHeight && props.style?.fontSize) ? (props.style?.lineHeight / props.style?.fontSize) : 1.777) ,
+    lineHeight: ((props.style?.lineHeight && props.style?.fontSize) ? (props.style?.lineHeight / props.style?.fontSize) : 1.777),
     anchor: props.style?.anchor || props.anchor || 'start',
     fill: props.style?.color || 'rgb(12, 28, 23)',
     x: props.anchor === 'start' ? '0.5' : '49.90%',
@@ -86,10 +97,10 @@ const TextImageAsBody = (props: TextImage) => {
     viewY: props.viewY || 0,
     viewX: props.viewX || 0,
     letterSpacing: props.style?.letterSpacing || null,
-  });
+  };
 };
 
-export { React, createContext, TextImageAsBody, useContext, StyleSheet };
+export { React, createContext, TextImageAsBody, useContext, StyleSheet, getIdFromBody };
 
 export type {
   LabelStorageContext,

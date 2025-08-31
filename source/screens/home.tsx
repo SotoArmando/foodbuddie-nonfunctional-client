@@ -1,23 +1,25 @@
-import { FlatList, Image, ImageBackground, Pressable, Text, TextStyle, View, ViewStyle } from "react-native"
+import { FlatList, Image, ImageBackground, Text, View, ViewStyle } from "react-native"
 import { useComponentStyles } from "../providers/StyleProvider"
 import PrerenderedText from "../abstract/PrerenderedTextView";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
 import { scale } from "../abstract/StyleProvider";
-import { HomeDash } from "../abstract/HomeDash";
-import { RectButton, ScrollView } from "react-native-gesture-handler";
+
+import { ScrollView } from "react-native-gesture-handler";
 import { transform } from "../helpers/styleStringHelper";
-import { useIsFocused } from "@react-navigation/native";
+
 import { useScreenRoutes } from "../providers/NavigationProvider";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { CommonRectButton } from "../components/CommonRectButton";
 import { useRecipes } from "./modulate/recipes/container/RecipesContainer";
 import chunk from 'chunk-text';
+import Delayed from "./modulate/util/delayed";
+import { useNavigation } from "@react-navigation/native";
 const RowStyle: ViewStyle = { display: 'flex', flexDirection: 'row' };
 
 
 export const Home = () => {
 
-    const isFocused = useIsFocused();
+    const isFocused = true;
     const {
         HomeComponent,
         HomeHeadingRow,
@@ -38,21 +40,7 @@ export const Home = () => {
         HomeUpcomingMealTitleLabel,
         HomeUpcomingMealTitleIcon,
         HomeUpcomingMealItemsRow,
-        HomeUpcomingMealItemsMeal,
-        HomeUpcomingMealItemsMealPicture,
-        HomeUpcomingMealItemsMealTitle,
-        HomeUpcomingMealItemsMealTimeLabel,
-        HomeUpcomingMealItemsMealServeLabel,
-        HomeUpcomingMealItemsMealIcon,
-        HomeUpcomingMealItemsMealCRow,
         HomeQuickInventoryLabel,
-        HomeQuickInventoryItemsContainer,
-        HomeQuickInventoryItemsQuickSummary,
-        HomeQuickInventoryItemsQuickSummarySmall,
-        HomeQuickInventoryItemsQuickSummaryTitle,
-        HomeQuickInventoryItemsQuickSummaryLabel,
-        HomeQuickInventoryItemsQuickSummaryLabelRoundedContainer,
-        HomeQuickInventoryItemsQuickSummaryLabelRoundedContainerBig,
         HomeLeftOverSuggestionsRow,
         HomeLeftOverSuggestionsLabel,
         HomeLeftOverSuggestionsViewAllButtonIcon,
@@ -75,115 +63,139 @@ export const Home = () => {
         HomeEmptyPantryMessageButtonLabel,
     } = useComponentStyles('Home', isFocused);
 
-    const { goToRecipeDetails, navigation } = useScreenRoutes();
-    const { recipes, loading } = useRecipes('https://returns-libraries-frequencies-val.trycloudflare.com/recipes');
-
+    const { goToRecipeDetails } = useScreenRoutes();
+    const { recipes } = useRecipes('https://bool-failing-calculator-orchestra.trycloudflare.com/recipes');
+    const navigation = useNavigation();
+    // const [srender , setSRender] = useState(true);
     const [horizontalisScrolling, setIsHorizontalScrolling] = useState(false);
+
+    useEffect(() => {
+        const unsubscribeBlur = navigation.addListener('blur', () => {
+            // setSRender(false);
+            // console.log('Screen is being navigated out (blurred)');
+            // Handle any cleanup or actions here
+        });
+
+        // const unsubscribeFocus = navigation.addListener('focus', () => {
+        //     console.log('Screen is now focused');
+        //     // Handle actions on entering screen
+        // });
+
+        return () => {
+            unsubscribeBlur();
+            // unsubscribeFocus();
+        };
+    }, [navigation]);
+
     useEffect(() => {
         // navigation.preload('RecipesDetails') 
     }, [])
 
-    return <SafeAreaView>
-        <ScrollView scrollEnabled={!horizontalisScrolling}>
-            <View style={{ ...HomeComponent }}>
-                <View style={{ display: 'flex', flexDirection: 'column', position: 'relative', }}>
-                    <View style={{ maxHeight: scale(48), height: scale(48), marginBottom: scale(20), backgroundColor: '', position: 'relative' }}>
-                        <View style={{ alignContent: 'center', alignItems: 'center', height: scale(36), minHeight: scale(36), flexDirection: 'row', flex: 1, justifyContent: 'space-between', position: 'relative' }}>
-                            <View style={{ transform: 'translate(1px,2px)' }}>
-                                <PrerenderedText
-                                    style={{ ...HomeHeadingTitle, }}
-                                    anchor="start"
-                                    lines={['Welcome, Atharva!']}
-                                    width={236}
-                                    height={36}
-                                    quality={3}
-                                    viewStyle={{ transform: transform(-1.25, -1.25) }}
-                                    isFocused={isFocused}
-                                />
-                            </View>
-
-                            <Image source={{ uri: 'https://i.imgur.com/Cis134r.png' }} style={HomeHeadingBellIcon} />
-
-
-                        </View>
-                        <View style={{ display: 'flex', flexDirection: 'row', marginTop: scale(-4.75), marginLeft: scale(4) }}>
-                            <Image source={{ uri: 'https://i.imgur.com/S7FaTPB.png' }} style={{ ...HomeHeadingIcon, marginRight: scale(4) }} />
+    return <ScrollView scrollEnabled={!horizontalisScrolling}>
+        <View style={{ ...HomeComponent }}>
+            <View style={{ display: 'flex', flexDirection: 'column', position: 'relative', }}>
+                <View style={{ maxHeight: scale(48), height: scale(48), marginBottom: scale(20), backgroundColor: '', position: 'relative' }}>
+                    <View style={{ alignContent: 'center', alignItems: 'center', height: scale(36), minHeight: scale(36), flexDirection: 'row', flex: 1, justifyContent: 'space-between', position: 'relative' }}>
+                        <View style={{ transform: 'translate(1px,2px)' }}>
                             <PrerenderedText
-                                style={HomeHeadingDate}
+                                style={{ ...HomeHeadingTitle, }}
                                 anchor="start"
-                                lines={['21 Sept, Thursday']}
-                                width={103}
+                                lines={['Welcome, Atharva!']}
+                                width={236}
                                 height={36}
-                                quality={1}
-                                viewStyle={{ transform: transform(0, -0.15) }}
+                                quality={3}
+                                hot={true}
+                                viewStyle={{ transform: transform(-1.25, -1.25) }}
                                 isFocused={isFocused}
                             />
                         </View>
-                        {/* <Image source={{ uri: 'https://i.imgur.com/ESJBzAk.png' }}  resizeMode='stretch' style={{ position: 'absolute', opacity: 1, width: 'auto', height: scale(48), left: 0, top: 0, right: 0, }} /> */}
+
+                        <Image source={{ uri: 'https://i.imgur.com/Cis134r.png' }} style={HomeHeadingBellIcon} />
+
+
                     </View>
-                    <View style={HomeUpcomingRow}>
+                    <View style={{ display: 'flex', flexDirection: 'row', marginTop: scale(-4.75), marginLeft: scale(4) }}>
+                        <Image source={{ uri: 'https://i.imgur.com/S7FaTPB.png' }} style={{ ...HomeHeadingIcon, marginRight: scale(4) }} />
                         <PrerenderedText
-                            style={HomeUpcomingLabel}
+                            style={HomeHeadingDate}
                             anchor="start"
-                            lines={['Upcoming Meal Plan']}
-                            width={168}
-                            height={24}
+                            lines={['21 Sept, Thursday']}
+                            width={103}
+                            height={36}
                             quality={1}
+                            hot={true}
+                            viewStyle={{ transform: transform(0, -0.15) }}
                             isFocused={isFocused}
                         />
-                        <Image source={{ uri: 'https://i.imgur.com/Sp3z2pt.png' }} style={HomeUpcomingIcon} />
                     </View>
-                    {/* <HomeDash /> */}
-                    <View style={HomeUpcomingMealColumn}>
-                        {/* Bitmap shadow */}
-                        <Image resizeMode="stretch" source={{ uri: 'https://i.imgur.com/OcgiLnh.png' }} style={{ position: 'absolute', opacity: 1, flex: 1, left: scale(-16), top: scale(-16), bottom: scale(-16), right: scale(-16), }} />
+                    {/* <Image source={{ uri: 'https://i.imgur.com/ESJBzAk.png' }}  resizeMode='stretch' style={{ position: 'absolute', opacity: 1, width: 'auto', height: scale(48), left: 0, top: 0, right: 0, }} /> */}
+                </View>
+                <View style={HomeUpcomingRow}>
+                    <PrerenderedText
+                        style={HomeUpcomingLabel}
+                        anchor="start"
+                        lines={['Upcoming Meal Plan']}
+                        width={168}
+                        hot={true}
+                        height={24}
+                        quality={1}
+                        isFocused={isFocused}
+                    />
+                    <Image source={{ uri: 'https://i.imgur.com/Sp3z2pt.png' }} style={HomeUpcomingIcon} />
+                </View>
+                {/* <HomeDash /> */}
+                <View style={HomeUpcomingMealColumn}>
+                    {/* Bitmap shadow */}
+                    <Image resizeMode="stretch" source={{ uri: 'https://i.imgur.com/OcgiLnh.png' }} style={{ position: 'absolute', opacity: 1, flex: 1, left: scale(-16), top: scale(-16), bottom: scale(-16), right: scale(-16), }} />
 
-                        <Image resizeMode="stretch" style={{ position: 'absolute', opacity: 1, flex: 1, height: '100%', left: 0, top: 0, right: 0, backgroundColor: '#fff', borderRadius: scale(19), }} />
+                    <Image resizeMode="stretch" style={{ position: 'absolute', opacity: 1, flex: 1, height: '100%', left: 0, top: 0, right: 0, backgroundColor: '#fff', borderRadius: scale(19), }} />
 
-                        <View style={{ height: scale(20) }} />
+                    <View style={{ height: scale(20) }} />
 
-                        <View style={HomeUpcomingMealHeadingRow} >
-                            <View style={{ ...RowStyle, alignContent: 'center', alignItems: 'center', transform: 'translateY(-1px)' }} >
-                                <Image source={{ uri: 'https://i.imgur.com/8F1B3Jx.png' }} style={HomeUpcomingMealHeadingTimeIcon} />
-                                <PrerenderedText
-                                    style={HomeUpcomingMealHeadingRowTimeLabel}
-                                    anchor="start"
-                                    lines={['09:00AM']}
-                                    width={52}
-                                    height={18}
-                                    quality={1}
-                                    viewStyle={{ transform: 'translateY(1px)' }}
-                                    isFocused={isFocused}
-                                />
-                            </View>
-                            <View style={RowStyle}>
-                                <Image source={{ uri: 'https://i.imgur.com/W5aGjNq.png' }} style={HomeUpcomingMealHeadingHeartIcon} />
-                                <Image source={{ uri: 'https://i.imgur.com/IZPCUTA.png' }} style={HomeUpcomingMealHeadingDotsIcon} />
-                            </View>
-                        </View>
-                        <View style={HomeUpcomingMealTitleRow}>
-                            <Image style={{ ...HomeUpcomingMealTitleIcon }} source={{ uri: 'https://i.imgur.com/Toze5kn.png' }} />
+                    <View style={HomeUpcomingMealHeadingRow} >
+                        <View style={{ ...RowStyle, alignContent: 'center', alignItems: 'center', transform: 'translateY(-1px)' }} >
+                            <Image source={{ uri: 'https://i.imgur.com/8F1B3Jx.png' }} style={HomeUpcomingMealHeadingTimeIcon} />
                             <PrerenderedText
-                                style={HomeUpcomingMealTitleLabel}
+                                style={HomeUpcomingMealHeadingRowTimeLabel}
                                 anchor="start"
-                                lines={['Breakfast']}
-                                width={67}
-                                height={21}
+                                lines={['09:00AM']}
+                                width={52}
+                                height={18}
                                 quality={1}
-                                viewStyle={{ transform: 'translate(-0.25px, 0.25px)' }}
+                                viewStyle={{ transform: 'translateY(1px)' }}
                                 isFocused={isFocused}
                             />
                         </View>
-                        <View style={HomeUpcomingMealItemsRow}>
-
-                            {/* mealUri="https://i.imgur.com/ME5KTDW.png" */}
-                            <HomeUpcomingMealItemMeal title="Breakfast" isFocused={isFocused} />
-                            {/* mealUri="https://i.imgur.com/bR0PUQ8.png"  */}
-                            <HomeUpcomingMealItemMeal second={true} title="Lunch" isFocused={isFocused} />
+                        <View style={RowStyle}>
+                            <Image source={{ uri: 'https://i.imgur.com/W5aGjNq.png' }} style={HomeUpcomingMealHeadingHeartIcon} />
+                            <Image source={{ uri: 'https://i.imgur.com/IZPCUTA.png' }} style={HomeUpcomingMealHeadingDotsIcon} />
                         </View>
-
-                        {/* <Image  source={{uri:'https://i.imgur.com/ik7PCv5.png'}} style={{position:'absolute', opacity: 0.5, width: '', height: HomeUpcomingMealColumn.height, left: 0, top: 0, right: 0, }} /> */}
                     </View>
+                    <View style={HomeUpcomingMealTitleRow}>
+                        <Image style={{ ...HomeUpcomingMealTitleIcon }} source={{ uri: 'https://i.imgur.com/Toze5kn.png' }} />
+                        <PrerenderedText
+                            style={HomeUpcomingMealTitleLabel}
+                            anchor="start"
+                            lines={['Breakfast']}
+                            width={67}
+                            height={21}
+                            quality={1}
+                            viewStyle={{ transform: 'translate(-0.25px, 0.25px)' }}
+                            isFocused={isFocused}
+                        />
+                    </View>
+                    <View style={HomeUpcomingMealItemsRow}>
+
+                        {/* mealUri="https://i.imgur.com/ME5KTDW.png" */}
+                        <HomeUpcomingMealItemMeal title="Breakfast" isFocused={isFocused} />
+                        {/* mealUri="https://i.imgur.com/bR0PUQ8.png"  */}
+                        <HomeUpcomingMealItemMeal second={true} title="Lunch" isFocused={isFocused} />
+                    </View>
+
+                    {/* <Image  source={{uri:'https://i.imgur.com/ik7PCv5.png'}} style={{position:'absolute', opacity: 0.5, width: '', height: HomeUpcomingMealColumn.height, left: 0, top: 0, right: 0, }} /> */}
+                </View>
+
+                <Suspense fallback={<Text >Loading</Text>}>
 
                     <PrerenderedText
                         style={HomeQuickInventoryLabel}
@@ -191,6 +203,7 @@ export const Home = () => {
                         lines={['Quick Inventory Summery']}
                         width={212}
                         height={24}
+                        // hot={true}
                         quality={1}
                         isFocused={isFocused}
                     />
@@ -257,83 +270,87 @@ export const Home = () => {
                     </View>
 
                     <View style={{ position: 'relative', height: 186, }} >
-
-                        <FlatList
-                            keyExtractor={(item, index) => index.toString()}
-                            data={recipes}
-                            style={HomeLeftOverSuggestionsMealsRow}
-                            removeClippedSubviews={true} showsHorizontalScrollIndicator={false}
-                            // onScrollBeginDrag={() => setIsHorizontalScrolling(true)}
-                            // onScrollEndDrag={() => setIsHorizontalScrolling(false)} 
-                            alwaysBounceHorizontal={false} horizontal
-                            contentContainerStyle={{ overflow: 'visible', padding: 20 }}
-                            style={{ position: 'absolute', overflow: 'visible', left: -20, right: -20, top: -20, bottom: -20 }}
-                            renderItem={({ item }) => <View style={({ ...HomeLeftOverSuggestionsMealsItem })}>
-                                {/* Bitmap shadow */}
-                                <Image resizeMode="stretch" source={{ uri: 'https://i.imgur.com/ExB68BA.png' }} style={{ position: 'absolute', opacity: 1, flex: 1, left: scale(-20), top: scale(-20), bottom: scale(-20), right: scale(-20), }} />
-                                <CommonRectButton onPress={goToRecipeDetails} resizeMode="stretch" style={({
-                                    position: 'absolute', opacity: 1, flex: 1, height: '100%', left: 0, top: 0, right: 0, backgroundColor: '#fff', borderRadius: scale(19),
-
-                                })} />
-
-                                <View pointerEvents="none" style={{position: 'relative'}}>
-                                    <Image source={{ uri: item["Alt Picture-src"] || (item.Picture.length > 0 && item.Picture) || "https://i.imgur.com/Pk1U5Jx.png" }} style={HomeLeftOverSuggestionsMealsItemPicture} />
-                                    <Image source={{ uri: "https://i.imgur.com/tuYt3ct.png" }} style={{...HomeLeftOverSuggestionsMealsItemPicture, opacity: 0.17, backgroundColor: "#FF8D51", position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}} />
-                                
-                                </View>
-                                <View pointerEvents="none" style={HomeLeftOverSuggestionsMealsItemTextContainer}>
-                                    <PrerenderedText
-                                        style={HomeLeftOverSuggestionsMealsItemTitle}
-                                        anchor="start"
-                                        lines={chunk(item.Title, 21).slice(0, 2)}
-                                        width={159}
-                                        height={chunk(item.Title, 21).slice(0, 2).length * 21}
-                                        quality={1}
-                                        viewStyle={{ transform: transform(-0.25, 0.25) }}
-                                        isFocused={isFocused}
-                                    />
-                                    <PrerenderedText
-                                        style={HomeLeftOverSuggestionsMealsItemDescription}
-                                        anchor="start"
-                                        lines={chunk(item.Description, 29).slice(0, (chunk(item.Title, 21).slice(0, 2).length > 1 ? 1 : 2))}
-                                        width={160}
-                                        height={(chunk(item.Title, 21).slice(0, 2).length > 1 ? 1 : 2) * 15}
-                                        quality={1}
-                                        viewStyle={{ transform: transform(-0.5, -0.75) }}
-                                        isFocused={isFocused}
-                                    />
-                                </View>
-                                <View pointerEvents="none" style={HomeLeftOverSuggestionsMealsItemIconContainer}>
+                        <Delayed manager={true}>
+                            <FlatList
+                                keyExtractor={(item, index) => index.toString()}
+                                data={recipes}
+                                style={HomeLeftOverSuggestionsMealsRow}
+                                initialNumToRender={4}
+                                removeClippedSubviews={true} showsHorizontalScrollIndicator={false}
+                                // onScrollBeginDrag={() => setIsHorizontalScrolling(true)}
+                                // onScrollEndDrag={() => setIsHorizontalScrolling(false)} 
+                                alwaysBounceHorizontal={false} horizontal
+                                contentContainerStyle={{ overflow: 'visible', padding: 20 }}
+                                style={{ position: 'absolute', overflow: 'visible', left: -20, right: -20, top: -20, bottom: -20 }}
+                                renderItem={({ item }) => <View style={({ ...HomeLeftOverSuggestionsMealsItem })}>
                                     {/* Bitmap shadow */}
-                                    <Image resizeMode="stretch" source={{ uri: 'https://i.imgur.com/pL5hWvV.png' }} style={{ position: 'absolute', opacity: 1, flex: 1, left: scale(-20), top: scale(-20), bottom: scale(-20), right: scale(-20), }} />
-                                    <Image resizeMode="stretch" style={{
-                                        position: 'absolute', opacity: 1, flex: 1, left: 0, top: 0, bottom: 0, right: 0, backgroundColor: '#FFFFFF', borderRadius: scale(35), borderWidth: 1,
-                                        borderColor: "#FFFFFF",
+                                    <Image resizeMode="stretch" source={{ uri: 'https://i.imgur.com/ExB68BA.png' }} style={{ position: 'absolute', opacity: 1, flex: 1, left: scale(-20), top: scale(-20), bottom: scale(-20), right: scale(-20), }} />
+                                    <CommonRectButton onPress={goToRecipeDetails} resizeMode="stretch" style={({
+                                        position: 'absolute', opacity: 1, flex: 1, height: '100%', left: 0, top: 0, right: 0, backgroundColor: '#fff', borderRadius: scale(19),
+
+                                    })} />
+
+                                    <View pointerEvents="none" style={{ position: 'relative' }}>
+                                        <Image source={{ uri: item["Alt Picture-src"] || (item.Picture.length > 0 && item.Picture) || "https://i.imgur.com/Pk1U5Jx.png" }} style={HomeLeftOverSuggestionsMealsItemPicture} />
+                                        <Image source={{ uri: "https://i.imgur.com/KFz1K3E.png" }} style={{ ...HomeLeftOverSuggestionsMealsItemPicture, backgroundColor: "transparent", opacity: 1, position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} />
+
+                                    </View>
+                                    <View pointerEvents="none" style={HomeLeftOverSuggestionsMealsItemTextContainer}>
+                                        <PrerenderedText
+                                            style={HomeLeftOverSuggestionsMealsItemTitle}
+                                            anchor="start"
+                                            lines={chunk(item.Title, 21).slice(0, 2)}
+                                            width={159}
+                                            height={chunk(item.Title, 21).slice(0, 2).length * 21}
+                                            quality={1}
+                                            viewStyle={{ transform: transform(-0.25, 0.25) }}
+                                            isFocused={isFocused}
+                                        />
+                                        <PrerenderedText
+                                            style={HomeLeftOverSuggestionsMealsItemDescription}
+                                            anchor="start"
+                                            lines={chunk(item.Description, 29).slice(0, (chunk(item.Title, 21).slice(0, 2).length > 1 ? 1 : 2))}
+                                            width={160}
+                                            height={(chunk(item.Title, 21).slice(0, 2).length > 1 ? 1 : 2) * 15}
+                                            quality={1}
+                                            viewStyle={{ transform: transform(-0.5, -0.75) }}
+                                            isFocused={isFocused}
+                                        />
+                                    </View>
+                                    <View pointerEvents="none" style={HomeLeftOverSuggestionsMealsItemIconContainer}>
+                                        {/* Bitmap shadow */}
+                                        <Image resizeMode="stretch" source={{ uri: 'https://i.imgur.com/pL5hWvV.png' }} style={{ position: 'absolute', opacity: 1, flex: 1, left: scale(-20), top: scale(-20), bottom: scale(-20), right: scale(-20), }} />
+                                        <Image resizeMode="stretch" style={{
+                                            position: 'absolute', opacity: 1, flex: 1, left: 0, top: 0, bottom: 0, right: 0, backgroundColor: '#FFFFFF', borderRadius: scale(35), borderWidth: 1,
+                                            borderColor: "#FFFFFF",
+                                        }} />
+                                        <Image source={{ uri: "https://i.imgur.com/Y90joeL.png" }} style={HomeLeftOverSuggestionsMealsItemIcon} />
+                                    </View>
+                                    <View pointerEvents="none" style={{
+                                        borderWidth: scale(0.05),
+                                        borderColor: "rgba(216,38,106, 0.1)",
+                                        position: 'absolute',
+                                        left: 0,
+                                        right: 0,
+                                        top: 0,
+                                        bottom: 0,
+                                        borderRadius: scale(19),
                                     }} />
-                                    <Image source={{ uri: "https://i.imgur.com/Y90joeL.png" }} style={HomeLeftOverSuggestionsMealsItemIcon} />
-                                </View>
-                                <View pointerEvents="none" style={{
-                                    borderWidth: scale(0.05),
-                                    borderColor: "rgba(216,38,106, 0.1)",
-                                    position: 'absolute',
-                                    left: 0,
-                                    right: 0,
-                                    top: 0,
-                                    bottom: 0,
-                                    borderRadius: scale(19),
-                                }} />
-                                {/* <Image resizeMode="contain" source={{uri: 'https://i.imgur.com/jaxqjan.png'}} style={{position: 'absolute', left: 0, right: 0, top: 0, height: '100%', width: '100%', opacity: 0.5, flex: 1,  }}/> */}
-                            </View>}
+                                    {/* <Image resizeMode="contain" source={{uri: 'https://i.imgur.com/jaxqjan.png'}} style={{position: 'absolute', left: 0, right: 0, top: 0, height: '100%', width: '100%', opacity: 0.5, flex: 1,  }}/> */}
+                                </View>}
 
-                        />
+                            />
+                        </Delayed>
+
                     </View>
+                </Suspense>
 
-                    {/* <Image resizeMode="contain"  source={{uri: 'https://i.imgur.com/GxoWsfj.png'}} style={{position: 'absolute', left: 0, right: 0, top: 0, height: '100%', width: '100%', opacity: 0.5, flex: 1,   }}/> */}
-                </View>
-                <View style={{ backgroundColor: 'transparent', height: '200' }} />
+                {/* <Image resizeMode="contain"  source={{uri: 'https://i.imgur.com/GxoWsfj.png'}} style={{position: 'absolute', left: 0, right: 0, top: 0, height: '100%', width: '100%', opacity: 0.5, flex: 1,   }}/> */}
             </View>
-        </ScrollView>
-    </SafeAreaView>
+            <View style={{ backgroundColor: 'transparent', height: '200' }} />
+        </View>
+    </ScrollView>
+
 
 }
 

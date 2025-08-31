@@ -1,5 +1,4 @@
 import { Skia } from '@shopify/react-native-skia';
-import { parse } from 'react-native-redash';
 
 export const states = [
     [

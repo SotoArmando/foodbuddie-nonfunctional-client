@@ -11,7 +11,7 @@ import { useScreenRoutes } from "../providers/NavigationProvider";
 
 const useSplashLogoIconComponentAppearing = () => {
     const { goToOnboard, navigation } = useScreenRoutes();
-    const isFocused = useIsFocused();
+    const isFocused = true;
     const onPress = () => {
         goToOnboard();
     };
@@ -54,14 +54,14 @@ const useSplashLogoIconComponentAppearing = () => {
 }
 
 const SplashLogoIconComponent = () => {
-    const isFocused = useIsFocused();
+    const isFocused = true;
 
     // if (!isFocused) return <V;
 
     const { SplashLogoIcon } = useComponentStyles('Splash')
     const { animatedStyles } = useSplashLogoIconComponentAppearing();
 
-    return isFocused && <Animated.View style={animatedStyles}>
+    return <Animated.View style={animatedStyles}>
         <Image
             style={SplashLogoIcon as any}
             source={{

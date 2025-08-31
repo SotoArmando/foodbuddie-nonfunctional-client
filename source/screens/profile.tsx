@@ -6,7 +6,7 @@ import { transform } from "../helpers/styleStringHelper";
 import { useIsFocused } from "@react-navigation/native";
 
 export const Profile = () => {
-    const isFocused = useIsFocused();
+    const isFocused = true;
 
     // if (!isFocused) return null;
     const {
@@ -56,6 +56,7 @@ export const Profile = () => {
                 width={215}
                 height={36}
                 viewStyle={{ transform: transform(1, 1.25) }}
+                hot={true}
                 isFocused={isFocused}
             />
             <Image source={{ uri: 'https://i.imgur.com/k1Ih47T.png' }} style={{ ...ProfileHouseholdIcon, transform: transform(-2, 0) }} />

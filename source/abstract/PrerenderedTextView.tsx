@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, Suspense } from 'react';
 import {
   View,
   Image,
@@ -11,11 +11,15 @@ import {
   InteractionManager,
   ImageStyle,
 } from 'react-native';
-import { TextImageAsBody } from './PrerenderingProvider';
+import { TextImageAsBody } from './PrerenderedTextProvider';
 import FastImage from '@d11/react-native-fast-image';
 import { scale } from './StyleProvider';
 import { usePrerenderCache } from '../providers/PrerenderedTextProvider';
 import { PrerenderedTextStyle } from './screensStyle/ScannerScreen';
+import { useIsFocused, useNavigationState, useRoute } from '@react-navigation/core';
+import { useCardAnimation } from '@react-navigation/stack';
+
+
 
 interface TextImage {
   height?: number;
@@ -35,26 +39,29 @@ interface TextImage {
   imageStyle?: ImageStyle;
   isFocused?: boolean;
   timeout?: number;
+  switcheable?: boolean;
   preloadColor?: { color: string, fontWeight: string }[];
   pStyles?: number;
+  hot?: boolean;
 }
 
 const usePrerenderedTextUrl = (props: TextImage) => {
   const [url, setURL] = useState('');
   const { getPrerenderedUrl } = usePrerenderCache();
   const [preloaded, setPreloaded] = useState<string[]>([]);
+  const route = useRoute()
 
   useEffect(() => {
-    getPrerenderedUrl(props as any).then((result) => {
+    getPrerenderedUrl(props as any, route.name).then((result) => {
       setURL(result);
     });
 
     if (props.preloadColor) {
       // console.log(props.preloadColor)
       props.preloadColor.forEach(e => {
-        getPrerenderedUrl({ ...props, style: { ...props.style, color: e.color, fontWeight: e.fontWeight } } as any).then(v => {
+        getPrerenderedUrl({ ...props, style: { ...props.style, color: e.color, fontWeight: e.fontWeight } } as any, route.name).then(v => {
           setPreloaded([...preloaded, v])
-          FastImage.preload(preloaded.map(e => ({ uri: e })));
+          // FastImage.preload(preloaded.map(e => ({ uri: e })));
         })
       })
     }
@@ -62,7 +69,7 @@ const usePrerenderedTextUrl = (props: TextImage) => {
   }, []);
 
   // console.log(props.pStyles, props.lines, url);
-  const memo = useMemo(() => ({ url: props.pStyles !== undefined ? preloaded[props.pStyles] : url, preloaded }), [props.pStyles, url])
+  const memo = useMemo(() => ({ url: props.pStyles !== undefined && props.pStyles > 0 ? preloaded[props.pStyles] : url, preloaded }), [props.pStyles, url])
   return memo;
 };
 
@@ -74,66 +81,81 @@ const PrerenderedText: React.FC<TextImage> = (props = {
   preloadColor: [],
   pStyles: undefined,
 }) => {
-  const { isFocused = false, timeout = 500, pStyles } = props;
-  const [cIsFocused, setcIsFocused] = useState((pStyles && true) || false);
+  // const { isFocused = false, timeout = 500, pStyles } = props;
+  const [cIsFocused, setcIsFocused] = useState(props.hot);
   const { url, preloaded } = usePrerenderedTextUrl({ ...props, anchor: props.anchor || props.style?.anchor || 'start' });
-
+  const fetchTasks = [];
+  // const x = useIsFocused()
   useEffect(() => {
-    if (isFocused === true && cIsFocused !== isFocused) {
-      setTimeout(() => {
-        setcIsFocused(isFocused)
-      },  (pStyles !== undefined ? 0 : timeout));
+    // console.log("pstyles",props.pStyles)
+    // console.log("switcheable",props.switcheable)
+    // console.log(props.pStyles !== undefined && props.switcheable === true)
+    if (props.hot === true) {
+      // setcIsFocused(true);
     } else {
-      if (cIsFocused !== isFocused) {
-        setcIsFocused(isFocused)
-      }
+
+      InteractionManager.runAfterInteractions(() => {
+        setcIsFocused(true);
+      })
+
     }
 
-  }, [isFocused]);
+  }, []);
 
-  const images =  [
+  const images = useMemo(() => [
     <FastImage
       resizeMode={FastImage.resizeMode.contain}
-      source={{ uri: url }}
+      // fallback={true}
+      source={{
+        uri: url,
+
+        priority: props.hot ? FastImage.priority.high : FastImage.priority.normal,
+
+      }}
       style={{
         height: props.style?.height || scale(props.height || 30),
         minHeight: props.style?.height || scale(props.height || 30),
         width: props.style?.width || scale(props.width || 200),
         minWidth: props.style?.width || scale(props.width || 200),
         // backgroundColor: pStyles ? 'rgba(0,0,244,0.3)' : 'red',
-        display: cIsFocused && props.pStyles !== undefined ? 'none' : props.style?.display,
+        display: props.pStyles !== undefined && props.pStyles >= 0 ? 'none' : props.style?.display,
         ...props.imageStyle,
       }}
     />,
     ...preloaded.map((e, ie) => <FastImage
       resizeMode={FastImage.resizeMode.contain}
-      source={{ uri: e }}
+      source={{
+        uri: e,
+        priority: FastImage.priority.low,
+      }}
       style={{
         height: props.style?.height || scale(props.height || 30),
         minHeight: props.style?.height || scale(props.height || 30),
         width: props.style?.width || scale(props.width || 200),
         minWidth: props.style?.width || scale(props.width || 200),
         // backgroundColor: pStyles ? 'rgba(0,0,244,0.3)' : 'red',
-        display: cIsFocused && ie === props.pStyles ? 'flex' : 'none',
+        display: ie === props.pStyles ? 'flex' : 'none',
         ...props.imageStyle,
       }}
     />)
-  ]
+  ], [props.pStyles, url])
 
   // console.log(props)
   return (
-    <View style={{
-      ...props.viewStyle,
-      height: props.style?.height || scale(props.height || 30),
-      width: props.style?.width || scale(props.width || 200),
-      
-      // backgroundColor: isFocused ? 'transparent' :  props.style?.color
-    }}>
-      <View style={{display: cIsFocused ? 'flex':'none'}}>
-      { images}
+    <Suspense>
+      <View style={{
+        ...props.viewStyle,
+        minHeight: props.style?.height || scale(props.height || 30),
+        minWidth: props.style?.width || scale(props.width || 200),
+        // backgroundColor:'blue'
+        // backgroundColor: isFocused ? 'transparent' :  props.style?.color
+      }}>
+        <View>
+          {cIsFocused && images}
 
+        </View>
       </View>
-    </View>
+    </Suspense>
 
   );
 };

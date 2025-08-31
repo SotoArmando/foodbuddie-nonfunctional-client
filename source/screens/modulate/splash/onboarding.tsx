@@ -39,7 +39,7 @@ const useOnboardingPage = () => {
         },
     ]
     const goToNext = () => {
-        console.log("currentPage",currentPage);
+        // console.log("currentPage",currentPage);
         if (currentPage > 1) {
             goToSignUp();
         } else {
@@ -104,7 +104,7 @@ export const Onboarding = () => {
         </>
     });
 
-    const isFocused = useIsFocused();
+    const isFocused = true;
 
     // if (!isFocused) return null;
 

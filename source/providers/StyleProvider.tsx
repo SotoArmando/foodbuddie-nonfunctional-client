@@ -16,11 +16,12 @@ export const useComponentStyles = <T extends keyof ComponentStyles>(
   componentName: T,
   isFocused?: boolean
 ) => {
-  if (isFocused === false) {
-    return {} as any;
-  }
+  // if (isFocused === false) {
+  //   return {} as any;
+  // }
   
   const styles = useContext(StyleContext);
+  
   return scaleStyles(styles[componentName]);
 };
 

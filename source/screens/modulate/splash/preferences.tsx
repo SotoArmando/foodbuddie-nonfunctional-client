@@ -233,7 +233,7 @@ export const Preferences = () => {
         </View>
     });
 
-    const isFocused = useIsFocused();
+    const isFocused = true;
 
     // if (!isFocused) return null;
 

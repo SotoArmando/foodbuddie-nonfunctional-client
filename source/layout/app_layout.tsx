@@ -4,8 +4,7 @@ import {
     // useLinkBuilder,
     // useTheme,
 } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Dimensions } from 'react-native';
+import { Animated, Dimensions, StatusBar, View } from 'react-native';
 import { SplashScreen } from '../screens/splash';
 import { Preferences } from '../screens/modulate/splash/preferences';
 import { AllSet } from '../screens/modulate/status/allset';
@@ -24,11 +23,22 @@ import { Scanner } from '../screens/scan';
 import { LoadScreen } from '../screens/modulate/status/loadscreen';
 import { Onboarding } from '../screens/modulate/splash/onboarding';
 import { SignUp } from '../screens/modulate/splash/signup';
-type RootStackParamList = any;
+import { createStackNavigator } from '@react-navigation/stack';
+import MorphingShape from "../screens/modulate/bottomnavbar/morphtest";
+import { useMemo } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const MyTabs = createBottomTabNavigator<RootStackParamList>({
+
+const Navigation = createStackNavigator({
     screens: {
+        Home: () => <></>
     },
+    screenOptions: {
+        headerShown: false,
+        header: () => []
+    },
+
+
 });
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -56,7 +66,32 @@ const sceneInterpolator = ({ current }: { current: any }) => ({
         transform: [
             {
                 translateX: current.progress.interpolate({
-                    inputRange: [-0.25, 0, 0.25], // Normalized progress range
+                    inputRange: [-1, 0, 1], // Normalized progress range
+                    outputRange: [-screenWidth, 0, screenWidth], // Corresponding translateX values
+                }),
+            },
+        ],
+        display: (current.progress <= -1 || current.progress >= 1) ? 'none' : 'content',
+        backgroundColor: 'transparent',
+        opacity: current.progress.interpolate({
+            inputRange: [-1, 0, 1], // Normalized progress range
+            outputRange: [0, 1, 0],
+        }),
+    },
+    containerStyle: {
+        backgroundColor: 'transparent',
+    },
+    shadowStyle: {
+        backgroundColor: 'transparent',
+    }
+});
+
+const sceneInterpolator2 = ({ current }: { current: any }) => ({
+    sceneStyle: {
+        transform: [
+            {
+                translateX: current.progress.interpolate({
+                    inputRange: [1, 0, 1], // Normalized progress range
                     outputRange: [0, 0, screenWidth * 3], // Corresponding translateX values
                 }),
             },
@@ -77,172 +112,201 @@ const sceneInterpolator = ({ current }: { current: any }) => ({
 });
 
 const screenOptionsConfig: any = {
-    lazy: false,
-    animation: 'shift',
     headerShown: false,
 
-    header: () => null,
-    contentStyle: {
-        backgroundColor: 'transparent', // Set your desired background color here
-    },
-    transitionSpec: {
-        animation: 'spring',
-        config: {
-            // velocity: 0.02,
-            stiffness: 374, // Adjust stiffness for the spring
-            damping: 97, // Adjust damping for the spring
-            mass: 3.6 * 0.5, // Adjust mass for the spring
-            overshootClamping: true, // Prevent overshooting
-            restDisplacementThreshold: 0.001, // When to stop the animation
-            restSpeedThreshold: 0.001, // Speed threshold to stop the animation
-        },
-    },
-    sceneStyleInterpolator: sceneInterpolator,
+    animation: 'reveal_from_bottom',
+
 };
 
-const CommonLayout = ({ children }: { children: any }) => {
-    return <PrerenderCacheProvider >
+const CommonLayout = (props) => {
+    const { navigation, children, state } = props;
+    // console.log("state",state)
+    return <NavigationProvider navigation={navigation}>
+        <View style={{ marginBottom: StatusBar.currentHeight }} />
         {children}
-    </PrerenderCacheProvider>
+    </NavigationProvider>
+
 }
-export const AppLayout = () => {
+
+const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
+    const progress = Animated.add(
+        current.progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+        }),
+        next
+            ? next.progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 1],
+                extrapolate: 'clamp',
+            })
+            : 0
+    );
+
+    const translateX = Animated.multiply(
+        progress.interpolate({
+            inputRange: [0, 1, 3],
+            outputRange: [
+                screen.width * 1, // Focused, but offscreen in the beginning
+                0, // Fully focused
+                (screen.width * 1) * 0, // Fully unfocused
+            ],
+            extrapolate: 'clamp',
+        }),
+        inverted
+    );
+
+    const shadowOpacity = progress.interpolate({
+        inputRange: [0, 1, 2],
+        outputRange: [0, 0.5, 0],
+        extrapolate: 'clamp',
+    });
+
+    return {
+        cardStyle: {
+            transform: [{ translateX }],
+        },
+        shadowStyle: {
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 4 },
+            shadowRadius: 10,
+            shadowOpacity: shadowOpacity,
+            elevation: shadowOpacity.interpolate({
+                inputRange: [0, 0.5],
+                outputRange: [0, 10],
+                extrapolate: 'clamp',
+            }),
+        },
+    };
+};
+
+const AppLayout = () => {
 
     return <>
-        <NavigationContainer >
+        <NavigationContainer>
 
-            <NavigationProvider >
+            <Navigation.Navigator layout={CommonLayout} screenOptions={{
+                // header: ({navigation}) => <View style={{position:'absolute', bottom: 0, left: 0, right: 0, height:120, backgroundColor: 'red'}}>
+                //     <SkiaTutorial />
+                // </View>,
+                headerShown: false, cardShadowEnabled: true, freezeOnBlur: true, cardStyleInterpolator: forSlide, transitionSpec: {
+                    open: {
+                        animation: "spring",
+                        config: {
+                            delay:2,
+                            // velocity: 0.02,
+                            stiffness: 13, // Adjust stiffness for the spring
+                            damping: 13, // Adjust damping for the spring
+                            mass: 0.06, // Adjust mass for the spring
+                            restDisplacementThreshold: 0.1, // When to stop the animation
+                            restSpeedThreshold: 0.1, // Speed threshold to stop the animation
+                            overshootClamping: true,
+                        }
+
+                    }, close: {
+                        animation: "spring",
+                        config: {
+                            delay:2,
+                            // velocity: 0.02,
+                            stiffness: 13, // Adjust stiffness for the spring
+                            damping: 13, // Adjust damping for the spring
+                            mass: 0.03, // Adjust mass for the spring
+                            restDisplacementThreshold: 0.1, // When to stop the animation
+                            restSpeedThreshold: 0.1, // Speed threshold to stop the animation
+                            overshootClamping: true,
+                        }
+                    }
+                }
+            }} initialRouteName='Home'  >
+
+                <Navigation.Group screenOptions={{}}>
+                    <Navigation.Screen
+                        name="Splash"
+                        component={SplashScreen}
+                        // component={() => <></>}
+                        options={{ title: 'Splash' }} />
+                </Navigation.Group>
 
 
-                <BottomNavigation />
-                {/* Color Filter Layer with Internet Image */}
-            </NavigationProvider>
+                <Navigation.Group screenOptions={{}}>
+
+                    <Navigation.Screen
+                        name="Home"
+                        component={Home}
+                        options={{ title: 'AllSet' }} />
+                    <Navigation.Screen
+                        name="Planning"
+                        component={Planning}
+                        options={{ title: 'Planning' }} />
+                    <Navigation.Screen
+                        name="Pantry"
+                        component={Pantry}
+                        options={{ title: 'Pantry' }} />
+                    <Navigation.Screen
+                        name="Recipes"
+                        component={Recipes}
+                        options={{ title: 'Recipes' }} />
+
+                    <Navigation.Screen
+                        name="RecipesDetails"
+                        component={RecipesDetails}
+                        options={{ title: 'RecipesDetails' }} />
+                </Navigation.Group>
+
+                <Navigation.Group screenOptions={{}}>
+                    <Navigation.Screen
+                        name="Onboard"
+                        component={Onboarding}
+                        options={{ title: 'Onboard' }} />
+                    <Navigation.Screen
+                        name="SignUp"
+                        component={SignUp}
+                        options={{ title: 'SignUp' }} />
+                    <Navigation.Screen
+                        name="Preferences"
+                        component={Preferences}
+                        options={{ title: 'Preferences' }} />
+                    <Navigation.Screen
+                        name="AllSet"
+                        component={AllSet}
+                        options={{ title: 'AllSet' }} />
+                    <Navigation.Screen
+                        name="Profile"
+                        component={Profile}
+                        options={{ title: 'Profile', }} />
+                </Navigation.Group>
+
+                <Navigation.Group screenOptions={{
+
+                }}>
+                    <Navigation.Screen
+                        name="PlannerAdd"
+                        component={PlannerAdd}
+                        options={{ title: 'PlannerAdd' }} />
+                    <Navigation.Screen
+                        name="Scanner"
+                        component={Scanner}
+                        options={{ title: 'Scanner' }} />
+                    <Navigation.Screen
+                        name="LoadScreen"
+                        component={LoadScreen}
+                        options={{ title: 'LoadScreen' }} />
+                    <Navigation.Screen
+                        name="SearchScreen"
+                        component={SearchScreen}
+                        options={{ title: 'SearchScreen' }} />
+
+                </Navigation.Group>
+            </Navigation.Navigator>
+            {/* <BottomNavigation /> */}
+            {/* Color Filter Layer with Internet Image */}
+
+
+
         </NavigationContainer>
     </>
 }
 
-function BottomNavigation() {
-    return <MyTabs.Navigator
-        screenLayout={CommonLayout}
 
-        screenOptions={{ ...screenOptionsConfig, }}
-        initialRouteName='Home'
-        tabBar={props => <>
-            {/* <Text>asd11</Text> */}
-            {/* <CookMotionNotification />
-            <MyTabBar {...props} /> */}
-            {/* <Image
-    style={[screensLayoutStyles.filterImage, { opacity: 0.33, transform: 'rotate(0deg)', mixBlendMode: 'exclusion', }]}
-    
-    source={{
-        uri: 'https://i.imgur.com/1xU1p5h.png', // Replace with any URL
-    }}
-    resizeMode="stretch"
-/> */}
-
-            {/* <View pointerEvents="none" style={screensLayoutStyles.overlay}>
-
-</View> */}
-            {/* <MorphingShape /> */}
-            {/* <MorphingShapeSkia onNavigate={() => {}} /> */}
-            {/* Bitmap shadow */}
-
-            {/* <Image resizeMode="stretch" style={{ position: 'absolute', opacity: 1, flex: 1, left: 0, top: 0, bottom: 0, right: 0, backgroundColor: '#fff', borderRadius: scale(19), }} /> */}
-            <SkiaTutorial />
-
-        </>}>
-
-        <MyTabs.Group screenOptions={{ lazy: true }}>
-            <MyTabs.Screen
-                name="Splash"
-                component={SplashScreen}
-                // component={() => <></>}
-                options={{ title: 'Splash' }} />
-        </MyTabs.Group>
-
-
-        <MyTabs.Group screenOptions={{ lazy: false, }}>
-
-            <MyTabs.Screen
-                name="Home"
-                component={Home}
-                options={{ title: 'AllSet' }} />
-            <MyTabs.Screen
-                name="Planning"
-                component={Planning}
-                options={{ title: 'Planning' }} />
-            <MyTabs.Screen
-                name="Pantry"
-                component={Pantry}
-                options={{ title: 'Pantry' }} />
-            <MyTabs.Screen
-                name="Recipes"
-                component={Recipes}
-                options={{ title: 'Recipes' }} />
-
-            <MyTabs.Screen
-                name="RecipesDetails"
-                component={RecipesDetails}
-                options={{ title: 'Recipes Details' }} />
-        </MyTabs.Group>
-
-        <MyTabs.Group screenOptions={{ lazy: true }}>
-
-
-            <MyTabs.Screen
-                name="Onboard"
-                component={Onboarding}
-                options={{ title: 'Onboard' }} />
-            <MyTabs.Screen
-                name="SignUp"
-                component={SignUp}
-                options={{ title: 'SignUp' }} />
-            <MyTabs.Screen
-                name="Preferences"
-                component={Preferences}
-                options={{ title: 'Preferences' }} />
-            <MyTabs.Screen
-                name="AllSet"
-                component={AllSet}
-                options={{ title: 'AllSet' }} />
-            <MyTabs.Screen
-                name="Profile"
-                component={Profile}
-                options={{ title: 'Profile', }} />
-        </MyTabs.Group>
-
-        <MyTabs.Group screenOptions={{
-            ...screenOptionsConfig, sceneStyleInterpolator: sceneInterpolator1,
-            transitionSpec: {
-                animation: 'spring',
-                config: {
-                    // velocity: 0.02,
-                    stiffness: 15, // Adjust stiffness for the spring
-                    damping: 3, // Adjust damping for the spring
-                    mass: 1 / 200, // Adjust mass for the spring
-                    restDisplacementThreshold: 0.001, // When to stop the animation
-                    restSpeedThreshold: 0.001, // Speed threshold to stop the animation
-                },
-            }
-
-            , lazy: true
-        }}>
-            <MyTabs.Screen
-                name="PlannerAdd"
-                component={PlannerAdd}
-                options={{ title: 'PlannerAdd' }} />
-            <MyTabs.Screen
-                name="Scanner"
-                component={Scanner}
-                options={{ title: 'Scanner' }} />
-            <MyTabs.Screen
-                name="LoadScreen"
-                component={LoadScreen}
-                options={{ title: 'LoadScreen' }} />
-            <MyTabs.Screen
-                name="SearchScreen"
-                component={SearchScreen}
-                options={{ title: 'SearchScreen' }} />
-
-        </MyTabs.Group>
-    </MyTabs.Navigator>;
-}
+export default AppLayout;
