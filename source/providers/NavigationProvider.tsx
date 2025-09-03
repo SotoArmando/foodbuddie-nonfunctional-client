@@ -51,9 +51,7 @@ export const NavigationProvider: React.FC<{ children: ReactNode, navigation: Sta
           
           RNFetchBlob.session(currentScreen).dispose();
           setcurrentScreen(screenName);
-          setTimeout(() => {
-            navigation.replace(screenName, params || { routeName: screenName });
-          })
+          
 
           setTimeout(() => {
             const hiddenNavScreens = ['LoadScreen', 'PlannerAdd', 'Scanner', 'Splash', 'Onboard', 'SignUp', 'AllSet', 'Preferences'];
@@ -81,6 +79,13 @@ export const NavigationProvider: React.FC<{ children: ReactNode, navigation: Sta
 
           })
         })
+
+        setTimeout(() => {
+            navigation.replace(screenName, params || { routeName: screenName });
+            // setTimeout(() => {
+            //   navigation.navigate(screenName, params || { routeName: screenName });
+            // }, 1)
+          },2)
 
         
 

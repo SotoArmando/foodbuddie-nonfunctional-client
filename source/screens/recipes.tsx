@@ -63,6 +63,7 @@ export const Recipes = () => {
                             width={53}
                             height={15}
                             quality={1}
+                            hot={true}
                             viewStyle={{ transform: transform(-2.75, 0.5) }}
                             isFocused={isFocused}
                         />

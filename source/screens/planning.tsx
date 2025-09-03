@@ -14,6 +14,7 @@ import { DaySelectionProvider, useDaySelection } from "../providers/DaySelectorP
 import { AnimatedPantryBottomBorder, SwitchLabel } from "./pantry";
 import { Rect } from "react-native-svg";
 import { CommonRectButton } from "../components/CommonRectButton";
+import { Freezed } from "./modulate/util/freezed";
 
 const useDayListContainer = (props) => {
     const { isFocused } = props;
@@ -111,7 +112,7 @@ const DayListContainer = (props = { isFocused: true }) => {
     const { newLocal_2, newLocal_1, newLocal, newLocal_3 } = useDayListContainer({ isFocused });
     // console.log(newLocal_3)
     return <>
-        <View style={{ marginBottom: -16, }}>
+        <View style={{}}>
             {<Animated.FlatList
 
                 // keyExtractor={newLocal_2}
@@ -155,67 +156,71 @@ const PlannerMealRowComponent = ({ isFocused }) => {
     } = useComponentStyles('Planner');
 
     const [selected, setSelected] = useState(0);
-    const [render, setRender] = useState(false);
-    useEffect(() => {
-        InteractionManager.runAfterInteractions(() => {
-            setRender(true);
-        });
-    }, [])
+
     const handleClick = useCallback((v: number) => setSelected(v), [selected]);
     const handleS = useCallback((v: number) => selected === v, [selected]);
-    return render && <View style={PlannerMealRow}>
-        <CommonRectButton onPress={() => handleClick(0)} style={PlannerMealRowElement}>
-            <View style={{ ...PlannerMealRowElementLabelContainer, transform: transform(0, 0.75) }}>
-                {/* {selected === 0 && } */}
+    return <View style={{ minHeight: scale(48),
+
+
+          marginTop: scale(20),
+      marginBottom: scale(20),
+     }}>
+        { <View style={PlannerMealRow}>
+            <CommonRectButton onPress={() => handleClick(0)} style={PlannerMealRowElement}>
+                <View style={{ ...PlannerMealRowElementLabelContainer, transform: transform(0, 0.75) }}>
+                    {/* {selected === 0 && } */}
+                    <SwitchLabel
+                        icon={<Image source={{ uri: 'https://i.imgur.com/q6Azn1N.png' }} style={PlannerMealRowElementIcon}></Image>}
+                        active={handleS(0)}
+                        style={{ ...PlannerMealRowElementLabelInactive }}
+                        activeStyle={{ ...PlannerMealRowElementLabel, color: "#02733E" }}
+                        anchor="middle"
+                        lines={['Breakfast']}
+                        width={69}
+                        height={21}
+                        // quality={0.75}
+                        viewStyle={{ transform: transform(-0.5, 2.3) }}
+                        isFocused={isFocused}
+                    />
+
+                </View>
+                <AnimatedPantryBottomBorder active={handleS(0)} left={scale(16)} right={16} />
+            </CommonRectButton>
+            <CommonRectButton onPress={() => handleClick(1)} style={{ ...PlannerMealRowElement, borderBottomColor: 'transparent', }}>
                 <SwitchLabel
-                    icon={<Image source={{ uri: 'https://i.imgur.com/q6Azn1N.png' }} style={PlannerMealRowElementIcon}></Image>}
-                    active={handleS(0)}
+                    icon={<Image source={{ uri: 'https://i.imgur.com/sgihhdN.png' }} style={PlannerMealRowElementIcon} />}
+                    active={handleS(1)}
                     style={{ ...PlannerMealRowElementLabelInactive }}
                     activeStyle={{ ...PlannerMealRowElementLabel, color: "#02733E" }}
                     anchor="middle"
-                    lines={['Breakfast']}
-                    width={69}
+                    lines={['Lunch']}
+                    width={43}
                     height={21}
-                    // quality={0.75}
                     viewStyle={{ transform: transform(-0.5, 2.3) }}
                     isFocused={isFocused}
                 />
-
-            </View>
-            <AnimatedPantryBottomBorder active={handleS(0)} left={scale(16)} right={16} />
-        </CommonRectButton>
-        <CommonRectButton onPress={() => handleClick(1)} style={{ ...PlannerMealRowElement, borderBottomColor: 'transparent', }}>
-            <SwitchLabel
-                icon={<Image source={{ uri: 'https://i.imgur.com/sgihhdN.png' }} style={PlannerMealRowElementIcon} />}
-                active={handleS(1)}
-                style={{ ...PlannerMealRowElementLabelInactive }}
-                activeStyle={{ ...PlannerMealRowElementLabel, color: "#02733E" }}
-                anchor="middle"
-                lines={['Lunch']}
-                width={43}
-                height={21}
-                viewStyle={{ transform: transform(-0.5, 2.3) }}
-                isFocused={isFocused}
-            />
-            <AnimatedPantryBottomBorder active={handleS(1)} left={scale(16)} right={scale(16)} />
-        </CommonRectButton>
-        <CommonRectButton onPress={() => handleClick(2)} style={{ ...PlannerMealRowElement, borderBottomColor: 'transparent', }}>
-            <SwitchLabel
-                icon={<Image source={{ uri: 'https://i.imgur.com/4FII06N.png' }} style={PlannerMealRowElementIcon} />}
-                active={handleS(2)}
-                style={{ ...PlannerMealRowElementLabelInactive }}
-                activeStyle={{ ...PlannerMealRowElementLabel, color: "#02733E" }}
-                anchor="middle"
-                lines={['Dinner']}
-                width={47}
-                height={21}
-                viewStyle={{ transform: transform(-0.5, 2.3) }}
-                isFocused={isFocused}
-            />
-            <AnimatedPantryBottomBorder active={handleS(2)} left={scale(16)} right={scale(16)} />
-        </CommonRectButton>
-        {/* <Image source={{ uri: 'https://i.imgur.com//x5oCHuI.png' }} style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', opacity: 0.75 }}></Image> */}
+                <AnimatedPantryBottomBorder active={handleS(1)} left={scale(16)} right={scale(16)} />
+            </CommonRectButton>
+            <CommonRectButton onPress={() => handleClick(2)} style={{ ...PlannerMealRowElement, borderBottomColor: 'transparent', }}>
+                <SwitchLabel
+                    icon={<Image source={{ uri: 'https://i.imgur.com/4FII06N.png' }} style={PlannerMealRowElementIcon} />}
+                    active={handleS(2)}
+                    style={{ ...PlannerMealRowElementLabelInactive }}
+                    activeStyle={{ ...PlannerMealRowElementLabel, color: "#02733E" }}
+                    anchor="middle"
+                    lines={['Dinner']}
+                    width={47}
+                    height={21}
+                    viewStyle={{ transform: transform(-0.5, 2.3) }}
+                    isFocused={isFocused}
+                />
+                <AnimatedPantryBottomBorder active={handleS(2)} left={scale(16)} right={scale(16)} />
+            </CommonRectButton>
+            {/* <Image source={{ uri: 'https://i.imgur.com//x5oCHuI.png' }} style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', opacity: 0.75 }}></Image> */}
+        </View>}
     </View>
+
+
 }
 export const Planning = () => {
     const isFocused = true;
@@ -291,6 +296,7 @@ export const Planning = () => {
                         viewStyle={{ ...PlannerWeeklyPlanLabelMargin, transform: transform(-0.25, -0.5) }}
                         width={100}
                         height={24}
+                        hot={true}
                         isFocused={isFocused}
                     />
                     <PrerenderedText
@@ -299,13 +305,14 @@ export const Planning = () => {
                         lines={['Sept 2024']}
                         width={69}
                         height={21}
+                        hot={true}
                         viewStyle={{ ...PlannerDateLabelMargin, transform: transform(-0.25, 1.25) }}
                         isFocused={isFocused}
                     />
                     {/* <Image source={{ uri: 'https://i.imgur.com/KOGqWRW.png' }} resizeMode="stretch" style={{ position: 'absolute', opacity: 0.5, left: 0, top: 0, width: '100%', height: '100%' }} /> */}
                 </View>
 
-                <View style={{ position: 'relative' }}>
+                <View style={{ position: 'relative', marginBottom: scale(-16), minHeight: scale(79) }}>
                     {/* <View style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, backgroundColor: '', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }} >
                         <Animated.View style={{ width: scale(53), transform: transform(12, 0), height: '100%', backgroundColor: color }} />
                     </View> */}
@@ -319,7 +326,9 @@ export const Planning = () => {
             { start: 337, end: 390 }
         ]; */}
 
-                    {<DayListContainer isFocused={isFocused} />}
+                    {/* <Freezed manager={true}> */}
+                        {<DayListContainer isFocused={isFocused} />}
+                    {/* </Freezed> */}
                 </View>
 
 

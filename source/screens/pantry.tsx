@@ -300,6 +300,7 @@ export const Pantry = ({ }) => {
                             lines={['Do i have...']}
                             width={53}
                             height={15}
+                            hot={true}
                             quality={1}
                             viewStyle={{ transform: transform(-2.75, 0.5) }}
                             isFocused={isFocused}

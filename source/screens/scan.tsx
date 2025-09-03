@@ -121,7 +121,7 @@ export const Scanner = ({ route }) => {
     const { goToLoadScreen, goToPantry } = useScreenRoutes();
     const isFocused = true;
     const [manually, setManually] = useState(route?.params?.manually);
-    console.log(route)
+    // console.log(route)
     const {
         ScannerScreenComponent,
         ScannerScreenTitleLabel,

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 interface Ingrediente {
   Ingredientes: string;
@@ -76,7 +76,7 @@ export function useRecipes(apiUrl: string): UseRecipesResult {
           "Dish Types": JSON.parse(recipe["Dish Types"]),
           Tags: JSON.parse(recipe.Tags),
         }));
-        console.log(parsedRecipes)
+        // console.log(parsedRecipes)
         setRecipes(parsedRecipes);
       } catch (err: any) {
         setError(err.message);
@@ -88,6 +88,6 @@ export function useRecipes(apiUrl: string): UseRecipesResult {
 
     fetchRecipes();
   }, [apiUrl]);
-
-  return { recipes, loading, error };
+  const memo = useMemo(() =>({ recipes, loading, error }), [recipes])
+  return memo;
 }

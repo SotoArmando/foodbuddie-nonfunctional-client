@@ -60,6 +60,7 @@ export const SkiaTutorial = () => {
   const progress = useSharedValue(0);
   const progressO = useSharedValue(0);
   const progress1 = useSharedValue(-1);
+  const sharedCurrentActive = useSharedValue(0);
   const progress1d = useDerivedValue(() => {
     return progress1.value - (146 / 2)
   }, [progress1])
@@ -68,13 +69,13 @@ export const SkiaTutorial = () => {
   }, [progress1])
   const [currentActive, setcurrentActive] = useState(0);
   const circleOpacity = useDerivedValue(() => progressO.value);
-  const circleYPosition = useDerivedValue(() => progressO.value * 20);
+  // const circleYPosition = useDerivedValue(() => progressO.value * 20);
   const imageShadow = useImage("https://i.imgur.com/zHwObzo.png");
-  const label0 = useImage("https://bool-failing-calculator-orchestra.trycloudflare.com/static/3169106085.webp");
-  const label1 = useImage("https://bool-failing-calculator-orchestra.trycloudflare.com/static/3834523372.webp");
-  const label2 = useImage("https://bool-failing-calculator-orchestra.trycloudflare.com/static/3838130273.webp");
-  const label3 = useImage("https://bool-failing-calculator-orchestra.trycloudflare.com/static/3936234647.webp");
-  const label4 = useImage("https://bool-failing-calculator-orchestra.trycloudflare.com/static/4067652146.webp");
+  const label0 = useImage("https://maker-len-pirates-kerry.trycloudflare.com/static/3169106085.webp");
+  const label1 = useImage("https://maker-len-pirates-kerry.trycloudflare.com/static/3834523372.webp");
+  const label2 = useImage("https://maker-len-pirates-kerry.trycloudflare.com/static/3838130273.webp");
+  const label3 = useImage("https://maker-len-pirates-kerry.trycloudflare.com/static/3936234647.webp");
+  const label4 = useImage("https://maker-len-pirates-kerry.trycloudflare.com/static/4067652146.webp");
   const icon0 = useImage("https://i.imgur.com/5U0lJAC.png");
   const icon1 = useImage("https://i.imgur.com/Wy79JUg.png");
   const icon2 = useImage("https://i.imgur.com/G64woUg.png");
@@ -90,7 +91,7 @@ export const SkiaTutorial = () => {
     [goToHome, goToPlanning, goToPantry, goToRecipes, goToProfile][active]()
     setTimeout(() => {
       if (currentActive !== active) {
-
+        sharedCurrentActive.value = active;
         progress.value = 0;
         progressO.value = 1;
         progress1.value = -1;
@@ -115,7 +116,7 @@ export const SkiaTutorial = () => {
 
         });
       }
-    }, 2)
+    }, 0)
 
 
 

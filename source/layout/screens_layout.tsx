@@ -2,6 +2,7 @@ import { Image, ImageBackground, StatusBar, StyleSheet, View } from "react-nativ
 import { scaleStyles } from "../abstract/StyleProvider";
 import AppLayout from "./app_layout";
 import MorphingShape from "../screens/modulate/bottomnavbar/morphtest";
+import { PrerenderCacheProvider } from "../providers/PrerenderedTextProvider";
 
 
 
@@ -141,18 +142,18 @@ export const screensLayoutStyles = StyleSheet.create(
 );
 
 export const ScreensLayout = () => {
-    
+
     // return <MorphingShape />;
     return <>
         <View pointerEvents="none" style={screensLayoutStyles.overlayB}>
             <View pointerEvents="none"
-                style={{ ...screensLayoutStyles.filterImageB}}
-                //  backgroundColor: "#FDFEF4"
-                // source={{
-                //     uri: 'https://i.imgur.com/tzpLmwu.png', // Replace with any URL
-                // }}
-                // resizeMode="stretch"
-                // imageStyle={{ opacity: 0.25 }}
+                style={{ ...screensLayoutStyles.filterImageB }}
+            //  backgroundColor: "#FDFEF4"
+            // source={{
+            //     uri: 'https://i.imgur.com/tzpLmwu.png', // Replace with any URL
+            // }}
+            // resizeMode="stretch"
+            // imageStyle={{ opacity: 0.25 }}
             />
         </View>
         <StatusBar
@@ -160,7 +161,10 @@ export const ScreensLayout = () => {
             backgroundColor={'#FF8D51'}
             translucent={true}
         />
-        <AppLayout />
+        <PrerenderCacheProvider>
+            <AppLayout />
+        </PrerenderCacheProvider>
+
         <View pointerEvents="none" style={screensLayoutStyles.overlay}>
             <Image
                 style={screensLayoutStyles.filterImage}
@@ -173,7 +177,7 @@ export const ScreensLayout = () => {
         <View pointerEvents="none" style={screensLayoutStyles.overlay}>
             <Image
                 style={[screensLayoutStyles.filterImage, { opacity: 0.00001, transform: 'rotate(0deg)' }]}
-                
+
                 source={{
                     uri: 'https://i.imgur.com/wy6frJW.png', // Replace with any URL
                 }}
@@ -183,15 +187,15 @@ export const ScreensLayout = () => {
         <View pointerEvents="none" style={screensLayoutStyles.overlay}>
             <Image
                 style={[screensLayoutStyles.filterImage, { opacity: 0.00001, transform: 'rotate(0deg)' }]}
-                
+
                 source={{
                     uri: 'https://i.imgur.com/EZdC09A.png', // Replace with any URL
                 }}
                 resizeMode="stretch"
             />
         </View>
-        
-        <View pointerEvents="none" style={{...screensLayoutStyles.overlay, opacity: 0.01, backgroundColor: '#0011FF'}}>
+
+        <View pointerEvents="none" style={{...screensLayoutStyles.overlay, opacity: 0.01, backgroundColor: '#000986ff'}}>
         
         </View>
     </>

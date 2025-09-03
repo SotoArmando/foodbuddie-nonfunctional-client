@@ -5,7 +5,7 @@ const Delayed = ({ children, timeout, manager = false}: { children: any, timeout
     const [render, setRender] = useState(false);
 
     useEffect(() => {
-        if (manager) {
+        if (manager === true) {
             InteractionManager.runAfterInteractions(() => {
                 setRender(true)
             });

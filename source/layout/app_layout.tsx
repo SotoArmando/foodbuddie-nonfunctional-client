@@ -27,6 +27,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import MorphingShape from "../screens/modulate/bottomnavbar/morphtest";
 import { useMemo } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Easing } from 'react-native-reanimated';
+import Delayed from '../screens/modulate/util/delayed';
 
 
 const Navigation = createStackNavigator({
@@ -97,7 +99,7 @@ const sceneInterpolator2 = ({ current }: { current: any }) => ({
             },
         ],
         display: (current.progress <= -1 || current.progress >= 1) ? 'none' : 'content',
-        backgroundColor: 'transparent',
+        backgroundColor: "#FDFEF4",
         opacity: current.progress.interpolate({
             inputRange: [-1, -0.25, 0, 0.2, 1], // Normalized progress range
             outputRange: [0, 0, 1, 0, 0],
@@ -120,10 +122,10 @@ const screenOptionsConfig: any = {
 
 const CommonLayout = (props) => {
     const { navigation, children, state } = props;
-    // console.log("state",state)
+    // console.log("state",props)
     return <NavigationProvider navigation={navigation}>
         <View style={{ marginBottom: StatusBar.currentHeight }} />
-        {children}
+                {children}
     </NavigationProvider>
 
 }
@@ -166,6 +168,7 @@ const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
     return {
         cardStyle: {
             transform: [{ translateX }],
+            backgroundColor: "#FDFEF4",
         },
         shadowStyle: {
             shadowColor: '#000',
@@ -181,6 +184,70 @@ const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
     };
 };
 
+
+const forModalMotion = ({ current, next, inverted, layouts: { screen } }) => {
+  // Combine progress of current and next screens for transition smoothness
+  const progress = Animated.add(
+    current.progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 1],
+      extrapolate: 'clamp',
+    }),
+    next
+      ? next.progress.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        })
+      : 0
+  );
+
+  // Translate modal vertically from bottom (screen height) to center (0)
+  const translateY = Animated.multiply(
+    progress.interpolate({
+      inputRange: [0, 1, 3],
+      outputRange: [
+        screen.height, // Offscreen at bottom initially
+        0, // Fully visible centered
+        0, // No translation after transition complete
+      ],
+      extrapolate: 'clamp',
+    }),
+    inverted
+  );
+
+  // Optional scale effect from 0.9 to 1 for pop effect on show
+  const scale = progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.9, 1],
+    extrapolate: 'clamp',
+  });
+
+  // Shadow opacity fades in with modal showing, fades out with dismiss
+  const shadowOpacity = progress.interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [0, 0.5, 0],
+    extrapolate: 'clamp',
+  });
+
+  return {
+    
+    cardStyle: {
+      transform: [{ translateY }, { scale }],
+    },
+    shadowStyle: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowRadius: 10,
+      shadowOpacity: shadowOpacity,
+      elevation: shadowOpacity.interpolate({
+        inputRange: [0, 0.5],
+        outputRange: [0, 10],
+        extrapolate: 'clamp',
+      }),
+    },
+  };
+};
 const AppLayout = () => {
 
     return <>
@@ -194,8 +261,10 @@ const AppLayout = () => {
                     open: {
                         animation: "spring",
                         config: {
-                            delay:2,
-                            // velocity: 0.02,
+                            // duration: 750,
+                            // easing: Easing.out(Easing.exp)
+                            delay:0,
+                            velocity: 0.02,
                             stiffness: 13, // Adjust stiffness for the spring
                             damping: 13, // Adjust damping for the spring
                             mass: 0.06, // Adjust mass for the spring
@@ -207,7 +276,7 @@ const AppLayout = () => {
                     }, close: {
                         animation: "spring",
                         config: {
-                            delay:2,
+                            delay:0,
                             // velocity: 0.02,
                             stiffness: 13, // Adjust stiffness for the spring
                             damping: 13, // Adjust damping for the spring

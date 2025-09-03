@@ -13,9 +13,13 @@ import { ScreensLayout } from './source/layout/screens_layout';
 import { SessionProvider } from './source/providers/SessionProvider';
 import { DaySelectionProvider } from './source/providers/DaySelectorProvider';
 import { PrerenderCacheProvider } from './source/providers/PrerenderedTextProvider';
+import {enableFreeze} from "react-native-screens";
+
+enableFreeze(true);
 // import { NavigationProvider } from './source/providers/NavigationProvider';
 // import { useScreens } from 'react-native-screens';
 function App(): React.JSX.Element {
+  
   // useScreens();
   /*
    * To keep the template simple and small we're adding padding to prevent view
@@ -30,16 +34,16 @@ function App(): React.JSX.Element {
   return (
     <>
       {/* <StrictMode> */}
-      <PrerenderCacheProvider>
+      
         <StyleProvider>
           <SessionProvider initialSessionState={true}>
             <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#FDFEF4' }}>
+             
               <ScreensLayout />
 
             </GestureHandlerRootView>
           </SessionProvider>
         </StyleProvider>
-      </PrerenderCacheProvider>
 
       {/* </StrictMode> */}
     </>

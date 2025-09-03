@@ -60,9 +60,9 @@ export const PrerenderCacheProvider: React.FC<{ children: ReactNode }> = ({ chil
       const body = TextImageAsBody({ ...props, anchor: props.anchor || 'start' });
       const config = RNFetchBlob.config({
         session: routeName,
-        fileCache: true
+        // fileCache: true
       });
-      const response = config.fetch("GET", `https://bool-failing-calculator-orchestra.trycloudflare.com/images/${routeName}/${getIdFromBody(body)}.webp`,);
+      const response = config.fetch("GET", `https://maker-len-pirates-kerry.trycloudflare.com/images/${routeName}/${getIdFromBody(body)}.webp`,);
 
 
       // the image is now dowloaded to device's storage
@@ -71,35 +71,68 @@ export const PrerenderCacheProvider: React.FC<{ children: ReactNode }> = ({ chil
         // let imagePath = resp.path();
         // console.log(imagePath)
         // fs.unlink(imagePath);
-        return resp.base64();
+        if (resp.respInfo.status >= 200 && resp.respInfo.status <= 299) {
+          return `https://maker-len-pirates-kerry.trycloudflare.com/images/${routeName}/${getIdFromBody(body)}.webp`;
+          return resp.base64();
+        } else {
+          return undefined;
+        }
+
       });
 
       if (base64) {
-        console.log(props.lines || props.style?.lines,'base64',base64)
-        const newLocal = `data:image/wepb;base64,${base64}`;
+        // const newLocal = `data:image/wepb;base64,${base64}`;
         // console.log(base64)
-        urlCache.current.set(cacheKey, newLocal);
-        return newLocal;
+        urlCache.current.set(cacheKey, base64);
+        return base64;
       }
 
-      console.log('am asking')
+      // console.log('am asking')
+
       const promise = config.fetch(
         "POST",
-        'https://bool-failing-calculator-orchestra.trycloudflare.com/generate-svg',
+        'https://maker-len-pirates-kerry.trycloudflare.com/generate-svg',
         {
-          headers: JSON.stringify({
-            'Content-Type': 'application/json',
-          }),
-          body: JSON.stringify({ ...body, routeName: routeName }),
-        }
+          'Content-Type': 'application/json',
+        },
+        JSON.stringify({ ...body, routeName: routeName })
+
       ).then(async (response) => {
+
+        return response.text();
+      }).then(text => {
         // const data = await response.json();
-        const fullUrl = 'https://bool-failing-calculator-orchestra.trycloudflare.com' + data.imageUrl;
-        console.log(fullUrl);
+        // console.log(text)
+        const responseData = JSON.parse(text);
+
+        const fullUrl = 'https://maker-len-pirates-kerry.trycloudflare.com' + responseData.imageUrl;
+        return fullUrl;
         // setTimeout(() => {
         //   urlCache.current.set(cacheKey, fullUrl);
         // }, 0)
-        return fullUrl;
+      }).then(async url => {
+        const response = config.fetch("GET", url,);
+        // the image is now dowloaded to device's storage
+        const base64 = await response.then(resp => {
+          // the image path you can use it directly with Image component
+          // let imagePath = resp.path();
+          // console.log(imagePath)
+          // fs.unlink(imagePath);
+          if (resp.respInfo.status >= 200 && resp.respInfo.status <= 299) {
+            return resp.base64();
+          } else {
+            return undefined;
+          }
+
+        });
+
+        if (base64) {
+          // console.log(props.lines || props.style?.lines, 'base64', base64, (await response).info)
+          const newLocal = `data:image/wepb;base64,${base64}`;
+          // console.log(base64)
+          urlCache.current.set(cacheKey, newLocal);
+          return newLocal;
+        }
       });
 
 

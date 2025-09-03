@@ -1679,8 +1679,7 @@ export const defaultStyles: ComponentStyles = {
       height: 48,
       display: 'flex',
       flexDirection: 'row',
-      marginTop: 20,
-      marginBottom: 20,
+    
       marginHorizontal: -16,
       // maxWidth: 393,
       // minWidth: 393,
@@ -2595,6 +2594,7 @@ export const defaultStyles: ComponentStyles = {
     RecipeDetailComponent: {
       paddingTop: 69,
       paddingBottom: 300,
+      minHeight: 1000,
       backgroundColor: "#FDFEF4",
       paddingHorizontal: 16
     },

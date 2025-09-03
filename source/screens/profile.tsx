@@ -71,6 +71,7 @@ export const Profile = () => {
                 lines={['Add members']}
                 width={107}
                 height={21}
+                hot={true}
                 viewStyle={{ transform: transform(-0.25, 1.75) }}
                 isFocused={isFocused}
             />
@@ -128,7 +129,7 @@ export const Profile = () => {
             <View style={ProfileHelpTipsElement} >
                 <PrerenderedText
                     style={ProfileHelpTipsElementLabel}
-                    anchor="start"
+                    anchor="start"s
                     lines={['Expiry date reminders']}
                     width={152}
                     height={21}
@@ -140,7 +141,7 @@ export const Profile = () => {
                 <PrerenderedText
                     style={ProfileHelpTipsElementLabel}
                     anchor="start"
-                    lines={['About SmartEats']}
+                    lines={['About foodbuddie']}
                     width={152}
                     height={21}
                     isFocused={isFocused}
